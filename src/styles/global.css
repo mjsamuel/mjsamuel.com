@@ -5,3 +5,11 @@
 body {
     background-color: theme('colors.white');
 }
+
+::selection {
+    background: theme('colors.yellow');
+}
+
+::-moz-selection {
+    background: theme('colors.yellow')
+}
