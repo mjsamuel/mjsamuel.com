@@ -13,3 +13,15 @@ body {
 ::-moz-selection {
     background: theme('colors.yellow')
 }
+
+body > :first-child {
+    margin: 25px auto 0 auto;
+    width: 75%;
+    max-width: 800px;
+}
+
+@media screen and (max-width: 750px) {
+    body > :first-child {
+        width: 95%;
+    }
+}
