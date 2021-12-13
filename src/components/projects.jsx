@@ -1,15 +1,35 @@
-import * as React from "react"
+import * as React from "react";
+
+const projects = [
+  {
+    name: "1",
+    url: "",
+  },
+  {
+    name: "2",
+    url: "",
+  },
+  {
+    name: "3",
+    url: "",
+  },
+];
 
 // markup
 const Projects = () => {
   return (
-    <div class="grid grid-cols-3 gap-4 text-center">
-      <div class="bg-green text-white">1</div>
-      <div class="bg-green text-white">2</div>
-      <div class="bg-green text-white">3</div>
-      <div class="bg-green text-white">4</div>
-    </div>
-  )
-}
+    <section>
+      <div class="grid grid-cols-3 gap-4 text-center">
+        {projects.map((p) => {
+          return (
+            <a href={p.url}>
+              <div className="bg-green text-white rounded">{p.name}</div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
 
-export default Projects
+export default Projects;

@@ -3,25 +3,35 @@
 @tailwind utilities;
 
 body {
-    background-color: theme('colors.white');
+  background-color: theme("colors.white");
 }
 
 ::selection {
-    background: theme('colors.yellow');
+  background: theme("colors.yellow");
 }
 
 ::-moz-selection {
-    background: theme('colors.yellow')
+  background: theme("colors.yellow");
 }
 
-body > :first-child {
-    margin: 25px auto 0 auto;
-    width: 75%;
-    max-width: 800px;
+main {
+  margin: 100px 150px;
 }
 
-@media screen and (max-width: 750px) {
-    body > :first-child {
-        width: 95%;
-    }
+@media (max-width: 1080px) {
+  main {
+    margin: 100px 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    margin: 100px 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    margin: 100px 25px;
+  }
 }
