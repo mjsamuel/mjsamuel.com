@@ -1,7 +1,7 @@
 import {PtsCanvas} from 'react-pts-canvas'
 import {Rectangle,Color, Create, Pt} from 'pts/dist/es5'
 
-class ExampleComponent extends PtsCanvas {
+class Visualization extends PtsCanvas {
     constructor() {
     super();
     this.pts = [];
@@ -61,4 +61,4 @@ class ExampleComponent extends PtsCanvas {
   }
 }
 
-export default ExampleComponent
+export default Visualization

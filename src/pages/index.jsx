@@ -1,7 +1,5 @@
 import * as React from "react";
-import Projects from "../components/projects";
-import Navbar from "../components/navbar";
-import ExampleComponent from "../components/square";
+import Visualization from "../components/visualization";
 
 // markup
 const IndexPage = () => {
@@ -11,7 +9,7 @@ const IndexPage = () => {
       <div className="md:grid gap-8 grid-cols-2 h-full">
 
         <div className="order-2 md:order-1 h-1/5 md:h-full">
-          <ExampleComponent
+          <Visualization
             background="#E4E2DC"
             name="pts-tester"
           />
@@ -22,9 +20,9 @@ const IndexPage = () => {
             MATTHEW<br/>SAMUEL
           </h1>
           <div className="mb-2 font-medium">
-            <h2 className="border-b-2 border-t-2 text-xl py-1">ABOUT</h2>
-            <h2 className="border-b-2 text-xl py-1">WORK</h2>
-            <h2 className="border-b-2 text-xl py-1">CONTACT ME</h2>
+            <h2 className="border-b-2 border-t-2 text-2xl py-1">ABOUT</h2>
+            <h2 className="border-b-2 text-2xl py-1">WORK</h2>
+            <h2 className="border-b-2 text-2xl py-1">CONTACT</h2>
           </div>
         </div>
 
