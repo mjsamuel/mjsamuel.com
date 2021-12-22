@@ -16,6 +16,7 @@ body {
 
 .pts-tester {
   height: 100%;
+  cursor: none;
 }
 
 /* main { */

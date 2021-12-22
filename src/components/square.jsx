@@ -1,16 +1,20 @@
-import {PtsCanvas, QuickStartCanvas} from 'react-pts-canvas'
-import {Rectangle, Group, Geom, Create, Num, Shaping} from 'pts/dist/es5'
+import {PtsCanvas} from 'react-pts-canvas'
+import {Rectangle,Color, Create, Pt} from 'pts/dist/es5'
 
 class ExampleComponent extends PtsCanvas {
     constructor() {
     super();
-    this.noiseGrid = [];
+    this.pts = [];
+    this.follow = new Pt();
   }
 
   _create() {
-    // Create a line and a grid, and convert them to `Noise` points
-    let gd = Create.gridPts( this.space.innerBound, 20, 20 );
-    this.noiseGrid = Create.noisePts( gd, 0.05, 0.1, 20, 20 );
+    this.pts = Create.gridCells(
+      this.space.innerBound,
+      this.space.innerBound[1][0] / 20,
+      this.space.innerBound[1][1] / 20
+    );
+    this.follower = this.space.center;
   }
 
   componentDidUpdate() {
@@ -36,18 +40,24 @@ class ExampleComponent extends PtsCanvas {
 
   // Override PtsCanvas' animate function
   animate(time, ftime) {
+    this.follower = this.follower.add( this.space.pointer.$subtract( this.follower ) );
+    this.form.stroke("#E4E2DC");
 
-    if (!this.noiseGrid) return;
+    this.pts.forEach(p => {
+      let color;
+      let mag = this.follower.$subtract(Rectangle.center(p)).magnitude();
+      let r = Rectangle.fromCenter(Rectangle.center(p), Rectangle.size(p));
 
-    // Use pointer position to change speed
-    let speed = this.space.pointer.$subtract(this.space.center).divide(this.space.center).abs();
+      if (mag >= 95) {
+        color = "#1F3517"
+      } else if ( mag >= 80) {
+        color = "#9B9795"
+      } else {
+        color = "#E4E2DC"
+      }
 
-    // Generate noise in a grid
-    this.noiseGrid.forEach( (p) => {
-      p.step( 0.01*(1-speed.x), 0.01*(1-speed.y) );
-      this.form.fillOnly("#123").point( p, Math.abs( p.noise2D() * this.space.size.x/18 ), "circle" );
-    });
-
+      this.form.fill(color).rect(r);
+    })
   }
 }
 
