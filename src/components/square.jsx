@@ -30,7 +30,7 @@ class ExampleComponent extends PtsCanvas {
 
   // Override PtsCanvas' resize function
   resize() {
-    // this._create();
+    this._create();
   }
 
 
@@ -40,7 +40,7 @@ class ExampleComponent extends PtsCanvas {
     if (!this.noiseGrid) return;
 
     // Use pointer position to change speed
-    let speed = this.space.pointer.$subtract( this.space.center ).divide( this.space.center ).abs();
+    let speed = this.space.pointer.$subtract(this.space.center).divide(this.space.center).abs();
 
     // Generate noise in a grid
     this.noiseGrid.forEach( (p) => {
