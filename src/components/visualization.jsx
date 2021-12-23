@@ -1,11 +1,12 @@
 import {PtsCanvas} from 'react-pts-canvas'
-import {Rectangle,Color, Create, Pt} from 'pts/dist/es5'
+import {Rectangle, Create, Pt} from 'pts/dist/es5'
+import { tColors } from '../shared';
 
 class Visualization extends PtsCanvas {
     constructor() {
     super();
     this.pts = [];
-    this.follow = new Pt();
+    this.follower = new Pt();
   }
 
   _create() {
@@ -31,17 +32,15 @@ class Visualization extends PtsCanvas {
     this._create();
   }
 
-
   // Override PtsCanvas' resize function
   resize() {
     this._create();
   }
 
-
   // Override PtsCanvas' animate function
   animate(time, ftime) {
     this.follower = this.follower.add( this.space.pointer.$subtract( this.follower ) );
-    this.form.stroke("#E4E2DC");
+    this.form.stroke(tColors.white);
 
     this.pts.forEach(p => {
       let color;
@@ -49,11 +48,11 @@ class Visualization extends PtsCanvas {
       let r = Rectangle.fromCenter(Rectangle.center(p), Rectangle.size(p));
 
       if (mag >= 95) {
-        color = "#1F3517"
+        color = tColors.green
       } else if ( mag >= 80) {
         color = "#9B9795"
       } else {
-        color = "#E4E2DC"
+        color = tColors.white
       }
 
       this.form.fill(color).rect(r);
