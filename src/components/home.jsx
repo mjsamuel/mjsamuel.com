@@ -19,9 +19,9 @@ class Home extends React.Component {
               SAMUEL
             </h1>
             <div className="font-medium">
-              <h2 className="border-b-2 border-t-2 text-2xl py-1">ABOUT</h2>
-              <h2 className="border-b-2 text-2xl py-1">WORK</h2>
-              <h2 className="border-b-2 text-2xl py-1">CONTACT</h2>
+              <h2 className="border-b-2 border-t-2 text-2xl py-1 "><a className="hover:italic" href="">ABOUT</a></h2>
+              <h2 className="border-b-2 text-2xl py-1"><a className="hover:italic" href="">WORK</a></h2>
+              <h2 className="border-b-2 text-2xl py-1"><a className="hover:italic" href="">CONTACT</a></h2>
               <span className="text-xs">© 2021 Matthew Samuel.</span>
             </div>
           </div>
