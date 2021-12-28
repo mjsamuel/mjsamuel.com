@@ -1,7 +1,7 @@
 import * as React from "react";
-import Layout from '../components/layout.jsx'
+import Layout from "../components/layout.jsx";
 
-class About extends React.Component {
+class AboutPage extends React.Component {
   render() {
     return (
       <Layout>
@@ -11,4 +11,4 @@ class About extends React.Component {
   }
 }
 
-export default About
+export default AboutPage;
