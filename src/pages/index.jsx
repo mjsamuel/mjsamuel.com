@@ -1,12 +1,12 @@
 import * as React from "react";
-import { tColors } from "../shared";
+import {tColors} from "../shared";
+import { Link } from "gatsby";
 import Layout from "../components/layout";
 import Visualization from "../components/visualization";
 
 const IndexPage = () => {
   return (
-    <Layout>
-      <title>Home Page</title>
+    <Layout title="Home">
       <div className="flex flex-col md:grid gap-8 grid-cols-2 h-full">
         <div className="h-1/2 md:h-full">
           <Visualization background={tColors.white} name="pts-tester" />
@@ -20,19 +20,19 @@ const IndexPage = () => {
           </h1>
           <div className="font-medium">
             <h2 className="border-b-2 border-t-2 text-2xl py-1 ">
-              <a className="hover:italic" href="">
+              <Link to="/about" className="hover:italic">
                 ABOUT
-              </a>
+              </Link>
             </h2>
             <h2 className="border-b-2 text-2xl py-1">
-              <a className="hover:italic" href="">
+              <Link to="/about" className="hover:italic">
                 WORK
-              </a>
+              </Link>
             </h2>
             <h2 className="border-b-2 text-2xl py-1">
-              <a className="hover:italic" href="">
+              <Link to="/about" className="hover:italic">
                 CONTACT
-              </a>
+              </Link>
             </h2>
             <span className="text-xs">© 2021 Matthew Samuel.</span>
           </div>

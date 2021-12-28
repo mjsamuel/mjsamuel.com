@@ -4,7 +4,7 @@ import Layout from "../components/layout.jsx";
 class AboutPage extends React.Component {
   render() {
     return (
-      <Layout>
+      <Layout title="About">
         <h1>Lorem, ipsum dolor.</h1>
       </Layout>
     );
