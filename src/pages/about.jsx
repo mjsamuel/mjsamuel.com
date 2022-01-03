@@ -7,10 +7,10 @@ import Visualization from "../components/visualization";
 const links = [
   {
     name: "RESUME",
-    url: "",
+    url: "/resume.pdf",
   },
   {
-    name: "RESUME",
+    name: "GITHUB",
     url: "https://github.com/mjsamuel",
   },
   {
