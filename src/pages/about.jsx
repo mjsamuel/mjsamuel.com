@@ -36,18 +36,18 @@ class AboutPage extends React.Component {
           <div className="h-3/5 grid gap-8 grid-cols-4 ">
             <div className="bg-green"></div>
             <div className="col-span-2">
-              <Visualization
-                background="#E4E2DC"
-                animation="ECHO"
-                name="pts-tester"
-              />
+              <Visualization background="#0cf" animation="ECHO" name="pts"/>
             </div>
             <div>
               {links.map((link, i) => {
                 let style = "text-3xl font-medium".concat(
                   i + 1 !== links.length ? " pb-4" : ""
                 );
-                return <h3 className={style}><a href={link.url}>{link.name}</a></h3>;
+                return (
+                  <h3 className={style}>
+                    <a href={link.url}>{link.name}</a>
+                  </h3>
+                );
               })}
             </div>
           </div>
