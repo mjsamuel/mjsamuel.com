@@ -4,31 +4,51 @@ import { tColors } from "../shared";
 import Layout from "../components/layout.jsx";
 import Visualization from "../components/visualization";
 
+const links = [
+  {
+    name: "RESUME",
+    url: "",
+  },
+  {
+    name: "RESUME",
+    url: "https://github.com/mjsamuel",
+  },
+  {
+    name: "INSTAGRAM",
+    url: "https://www.instagram.com/matt.samuel/",
+  },
+  {
+    name: "LINKEDIN",
+    url: "https://au.linkedin.com/in/matt-samuel",
+  },
+];
+
 class AboutPage extends React.Component {
   render() {
     return (
       <Layout title="About">
-        <Link to="/">
-          <div className="text-2xl font-bold fixed top-12 right-12 hover:italic">
-            home
-          </div>
-        </Link>
-
         <div className="flex flex-col h-full">
-          <div className="h-1/2">
-            <h1>Hi, I'm Matt</h1>
+          <div className="h-2/5">
+            <h1 className="text-6xl font-bold">ABOUT</h1>
+            <Link to="/">home</Link>
           </div>
 
-          <div className="h-1/2 grid gap-8 grid-cols-4 ">
+          <div className="h-3/5 grid gap-8 grid-cols-4 ">
             <div className="bg-green"></div>
             <div className="col-span-2">
-              <Visualization background={tColors.white} name="pts-tester" />
+              <Visualization
+                background="#E4E2DC"
+                animation="ECHO"
+                name="pts-tester"
+              />
             </div>
             <div>
-              
-              <h3 className="text-xl">github</h3>
-              <h3 className="text-xl">instagram</h3>
-      <h3 className="text-xl">linkedin</h3>
+              {links.map((link, i) => {
+                let style = "text-3xl font-medium".concat(
+                  i + 1 !== links.length ? " pb-4" : ""
+                );
+                return <h3 className={style}><a href={link.url}>{link.name}</a></h3>;
+              })}
             </div>
           </div>
         </div>
