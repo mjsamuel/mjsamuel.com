@@ -9,7 +9,7 @@ const IndexPage = () => {
     <Layout title="Home">
       <div className="flex flex-col md:grid gap-8 grid-cols-2 h-full">
         <div className="h-1/2 md:h-full">
-          <Visualization background={tColors.white} name="pts-tester" />
+          <Visualization name="pts" />
         </div>
 
         <div className="flex flex-col justify-end flex-grow">

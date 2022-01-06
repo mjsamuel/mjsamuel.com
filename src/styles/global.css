@@ -14,7 +14,7 @@ body {
   background: theme("colors.yellow");
 }
 
-.pts-tester {
+.pts {
   height: 100%;
   cursor: none;
 }

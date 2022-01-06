@@ -18,9 +18,14 @@ class Visualization extends PtsCanvas {
     let rows = this.space.innerBound[1][1] / 20;
 
     this.pts = Create.gridCells(this.space.innerBound, columns, rows);
-
+    this.data = {};
+    this.data.dimensions = {
+      columns: Math.ceil(columns),
+      rows: Math.ceil(rows),
+    };
     switch (this.state.animation) {
       case "SPIRAL":
+        this.animate = this.animateSpiral;
         break;
       case "ECHO":
         this.animate = this.animateEcho;
@@ -78,20 +83,24 @@ class Visualization extends PtsCanvas {
     });
   }
 
+  animateSpiral(time, ftime) {
+    // equation: y = a*sin((x-h)/b)+k
+    this.pts.forEach((p, i) => {
+      let color = tColors.green;
+      this.form.fill(color).rect(p);
+    });
+  }
+
   animateEcho(time, ftime) {
     let maxRadius =
       (this.dimensions.columns > this.dimensions.rows
         ? this.dimensions.columns
-        : this.dimensions.rows) / 2;
-    let speed = 0.01
-    let r1 = time * speed % maxRadius;
-    let r2 = ((time * speed) + (maxRadius / 2)) % maxRadius
+        : this.dimensions.rows) * 0.75;
+    let speed = 0.008;
+    let r1 = (time * speed) % maxRadius;
+    let r2 = (time * speed + maxRadius / 2) % maxRadius;
     let rightComponent = Math.pow(r1, 2);
-    let rightComponent2 = Math.pow(r2, 2)
-
-    console.log({
-      r1, r2
-    })
+    let rightComponent2 = Math.pow(r2, 2);
 
     this.pts.forEach((p, i) => {
       let coords = {
@@ -104,15 +113,25 @@ class Visualization extends PtsCanvas {
         Math.pow(coords.y - this.center.y, 2);
 
       let color = tColors.green;
-      // if (leftComponent <= rightComponent2) {
-      //   color = tColors.yellow
-      // }
-
-      if (leftComponent <= rightComponent) {
-        color = tColors.green;
-      } else if (leftComponent <= rightComponent * 2) {
+      if (
+        leftComponent <= rightComponent2 * 2 &&
+        leftComponent >= rightComponent2
+      ) {
         color = tColors.white;
-      } else if (leftComponent <= rightComponent * 4) {
+      } else if (
+        leftComponent <= rightComponent2 * 4 &&
+        leftComponent > rightComponent2 * 2
+      ) {
+        color = tColors.gray;
+      } else if (
+        leftComponent <= rightComponent * 2 &&
+        leftComponent >= rightComponent
+      ) {
+        color = tColors.white;
+      } else if (
+        leftComponent <= rightComponent * 4 &&
+        leftComponent > rightComponent * 2
+      ) {
         color = tColors.gray;
       }
 
