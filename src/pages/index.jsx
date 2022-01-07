@@ -7,12 +7,12 @@ import Visualization from "../components/visualization";
 const IndexPage = () => {
   return (
     <Layout title="Home">
-      <div className="flex flex-col md:grid gap-8 grid-cols-2 h-full">
-        <div className="h-1/2 md:h-full">
-          <Visualization name="pts" />
+      <div className="flex flex-col md:grid gap-8 grid-cols-5 h-full">
+        <div className="h-1/2 md:h-full col-span-3">
+          <Visualization name="pts" background="#0c9" />
         </div>
 
-        <div className="flex flex-col justify-end flex-grow">
+        <div className="flex flex-col justify-end flex-grow col-span-2">
           <h1 className="text-6xl text-right font-bold flex-grow">
             MATTHEW
             <br />

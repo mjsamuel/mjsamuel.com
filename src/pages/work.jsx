@@ -8,7 +8,7 @@ class WorkPage extends React.Component {
   render() {
     return (
       <Layout title="About">
-        <Visualization animation="SPIRAL" name="pts" />
+        <Visualization animation="WAVE" name="pts" />
       </Layout>
     );
   }

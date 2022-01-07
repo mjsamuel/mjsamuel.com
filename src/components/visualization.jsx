@@ -14,29 +14,27 @@ class Visualization extends PtsCanvas {
   }
 
   _create() {
-    let columns = this.space.innerBound[1][0] / 20;
-    let rows = this.space.innerBound[1][1] / 20;
-
+    let columns = this.space.innerBound[1][0] / 25;
+    let rows = this.space.innerBound[1][1] / 25;
     this.pts = Create.gridCells(this.space.innerBound, columns, rows);
-    this.data = {};
-    this.data.dimensions = {
-      columns: Math.ceil(columns),
-      rows: Math.ceil(rows),
+
+    this.data = {
+      dimensions: {
+        columns: Math.ceil(columns),
+        rows: Math.ceil(rows),
+      }
     };
+
     switch (this.state.animation) {
-      case "SPIRAL":
-        this.animate = this.animateSpiral;
+      case "WAVE":
+        this.animate = this.animateWave;
         break;
       case "ECHO":
         this.animate = this.animateEcho;
-        this.dimensions = {
-          columns: Math.ceil(columns),
-          rows: Math.ceil(rows),
-        };
-        this.center = {
+        this.data.center = {
           x: Math.ceil(columns / 2),
           y: Math.ceil(rows / 2),
-        };
+        }
         break;
       default:
         this.animate = this.animateFollow;
@@ -71,9 +69,9 @@ class Visualization extends PtsCanvas {
       let mag = this.follower.$subtract(Rectangle.center(p)).magnitude();
       let color;
 
-      if (mag >= 95) {
+      if (mag >= 120) {
         color = tColors.green;
-      } else if (mag >= 80) {
+      } else if (mag >= 110) {
         color = tColors.gray;
       } else {
         color = tColors.white;
@@ -83,19 +81,30 @@ class Visualization extends PtsCanvas {
     });
   }
 
-  animateSpiral(time, ftime) {
-    // equation: y = a*sin((x-h)/b)+k
+  animateWave(time, ftime) {
+    let speed = time * 0.008;
     this.pts.forEach((p, i) => {
+      let coords = {
+        x: i % this.data.dimensions.columns,
+        y: Math.floor(i / this.data.dimensions.columns),
+      };
+      let leftComponent =
+        10 * Math.sin((coords.x - speed) / 12) + this.data.dimensions.rows / 2;
+
       let color = tColors.green;
+      if (leftComponent <= coords.y) {
+        color = tColors.white;
+      }
+
       this.form.fill(color).rect(p);
     });
   }
 
   animateEcho(time, ftime) {
     let maxRadius =
-      (this.dimensions.columns > this.dimensions.rows
-        ? this.dimensions.columns
-        : this.dimensions.rows) * 0.75;
+      (this.data.dimensions.columns > this.data.dimensions.rows
+        ? this.data.dimensions.columns
+        : this.data.dimensions.rows) * 0.75;
     let speed = 0.008;
     let r1 = (time * speed) % maxRadius;
     let r2 = (time * speed + maxRadius / 2) % maxRadius;
@@ -104,13 +113,13 @@ class Visualization extends PtsCanvas {
 
     this.pts.forEach((p, i) => {
       let coords = {
-        x: i % this.dimensions.columns,
-        y: Math.floor(i / this.dimensions.columns),
+        x: i % this.data.dimensions.columns,
+        y: Math.floor(i / this.data.dimensions.columns),
       };
 
       let leftComponent =
-        Math.pow(coords.x - this.center.x, 2) +
-        Math.pow(coords.y - this.center.y, 2);
+        Math.pow(coords.x - this.data.center.x, 2) +
+        Math.pow(coords.y - this.data.center.y, 2);
 
       let color = tColors.green;
       if (
