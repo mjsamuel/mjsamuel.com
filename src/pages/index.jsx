@@ -1,8 +1,22 @@
 import * as React from "react";
-import {tColors} from "../shared";
 import { Link } from "gatsby";
 import Layout from "../components/layout";
 import Visualization from "../components/visualization";
+
+const links = [
+  {
+    name: "ABOUT",
+    url: "/about",
+  },
+  {
+    name: "WORK",
+    url: "/work",
+  },
+  {
+    name: "CONTACT",
+    url: "/contact",
+  },
+];
 
 const IndexPage = () => {
   return (
@@ -18,22 +32,19 @@ const IndexPage = () => {
             <br />
             SAMUEL
           </h1>
-          <div className="font-medium text-2xl ">
-            <h2 className="border-b-2 border-t-2 py-1 ">
-              <Link to="/about" className="hover:italic">
-                ABOUT
-              </Link>
-            </h2>
-            <h2 className="border-b-2 py-1">
-              <Link to="/work" className="hover:italic">
-                WORK
-              </Link>
-            </h2>
-            <h2 className="border-b-2 py-1">
-              <Link to="/contact" className="hover:italic">
-                CONTACT
-              </Link>
-            </h2>
+          <div className="font-medium">
+            {links.map((link, i) => {
+              let style = "border-t-2 py-1 text-2xl ".concat(
+                i + 1 === links.length ? " border-b-2" : ""
+              );
+              return (
+                <h2 className={style}>
+                  <Link to={link.url} className="hover:italic">
+                    {link.name}
+                  </Link>
+                </h2>
+              );
+            })}
             <span className="text-xs">© 2021 Matthew Samuel.</span>
           </div>
         </div>

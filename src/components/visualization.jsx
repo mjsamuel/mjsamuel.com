@@ -22,10 +22,13 @@ class Visualization extends PtsCanvas {
       dimensions: {
         columns: Math.ceil(columns),
         rows: Math.ceil(rows),
-      }
+      },
     };
 
     switch (this.state.animation) {
+      case "SOLID":
+        this.animate = this.animateSolid;
+        break;
       case "WAVE":
         this.animate = this.animateWave;
         break;
@@ -34,7 +37,7 @@ class Visualization extends PtsCanvas {
         this.data.center = {
           x: Math.ceil(columns / 2),
           y: Math.ceil(rows / 2),
-        }
+        };
         break;
       default:
         this.animate = this.animateFollow;
@@ -145,6 +148,12 @@ class Visualization extends PtsCanvas {
       }
 
       this.form.fill(color).rect(p);
+    });
+  }
+
+  animateSolid(time, ftime) {
+    this.pts.forEach((p, i) => {
+      this.form.fill(tColors.green).rect(p);
     });
   }
 }

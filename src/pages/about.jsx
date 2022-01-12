@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 import { Link } from "gatsby";
 import { tColors } from "../shared";
 import Layout from "../components/layout.jsx";
@@ -34,14 +34,14 @@ class AboutPage extends React.Component {
           </div>
 
           <div className="h-3/5 grid gap-8 grid-cols-4 ">
-            <div className="bg-green"></div>
-            <div className="col-span-2">
-              <Visualization background="#0cf" animation="ECHO" name="pts"/>
+            <div className="bg-green">
+              <Visualization name="pts" bbackground={tColors.white} animation="SOLID"/>
             </div>
+            <div className="col-span-2 bg-gray"></div>
             <div>
               {links.map((link, i) => {
-                let style = "text-3xl font-medium".concat(
-                  i + 1 !== links.length ? " pb-4" : ""
+                let style = "font-medium text-2xl ".concat(
+                  i === 0 ? " pb-1" : "py-1"
                 );
                 return (
                   <h3 className={style}>
