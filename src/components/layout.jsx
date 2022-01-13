@@ -11,8 +11,10 @@ const Layout = ({ children, title }) => {
         <meta name="theme-color" content={tColors.white} />
       </Helmet>
       <main>
-        <Link to="/" class="fixed bottom-0 right-0">home</Link>
-        <div className="h-screen p-6 md:p-12 text-green">{children}</div>
+        {/* <Link to="/" class="fixed bottom-0 right-0">home</Link> */}
+        <div className="h-screen p-6 md:p-12 text-green flex justify-center">
+          <div className="w-full max-w-screen-2xl">{children}</div>
+        </div>
       </main>
     </>
   );
