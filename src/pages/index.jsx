@@ -2,26 +2,12 @@ import * as React from "react";
 import { Link } from "gatsby";
 import Layout from "../components/layout";
 import Visualization from "../components/visualization";
-
-const links = [
-  {
-    name: "ABOUT",
-    url: "/about",
-  },
-  {
-    name: "WORK",
-    url: "/work",
-  },
-  {
-    name: "CONTACT",
-    url: "/contact",
-  },
-];
+import { navLinks } from "../shared";
 
 const IndexPage = () => {
   return (
     <Layout title="Home">
-      <div className="flex flex-col md:grid gap-8 grid-cols-5 h-full">
+      <div className="flex flex-col md:grid gap-8 grid-cols-5 h-screen p-6 md:p-12 ">
         <div className="h-1/2 md:h-full col-span-3">
           <Visualization name="pts-hover" background="#0c9" />
         </div>
@@ -33,9 +19,9 @@ const IndexPage = () => {
             SAMUEL
           </h1>
           <div className="font-medium">
-            {links.map((link, i) => {
+            {navLinks.map((link, i) => {
               let style = "border-t-2 py-1 text-2xl ".concat(
-                i + 1 === links.length ? " border-b-2" : ""
+                i + 1 === navLinks.length ? " border-b-2" : ""
               );
               return (
                 <h2 className={style}>

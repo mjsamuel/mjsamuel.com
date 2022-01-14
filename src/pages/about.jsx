@@ -25,10 +25,10 @@ const links = [
 class AboutPage extends React.Component {
   render() {
     return (
-      <div>
+      <Layout title="Home" showNav>
         <div className="h-screen p-6 md:p-12 text-green grid gap-16 grid-cols-2">
           <div className="flex flex-row-reverse items-center">
-            <h1 className="text-6xl font-bold text-right">DORK WITH A<br/>KEYBOARD</h1>
+            <h1 className="text-6xl font-bold text-right">DORK WITH A KEYBOARD</h1>
           </div>
           <div className="flex items-center">
             <div className="h-4/5 w-3/5">
@@ -59,7 +59,7 @@ class AboutPage extends React.Component {
             expedita.
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

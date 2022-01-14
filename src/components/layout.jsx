@@ -1,20 +1,35 @@
 import * as React from "react";
 import { Link } from "gatsby";
 import { Helmet } from "react-helmet";
-import { tColors } from "../shared";
+import { tColors, navLinks } from "../shared";
 
-const Layout = ({ children, title }) => {
+const Layout = ({ children, title, showNav = false }) => {
+  let navigation = <></>;
+  if (showNav) {
+    navigation = (
+      <nav>
+        {navLinks.map((link, i) => {
+          return (
+            <h2>
+              <Link to={link.url} className="hover:italic">
+                {link.name}
+              </Link>
+            </h2>
+          );
+        })}
+      </nav>
+    );
+  }
+
   return (
     <>
       <Helmet>
         <title>Matt Samuel | {title}</title>
         <meta name="theme-color" content={tColors.white} />
       </Helmet>
-      <main>
-        {/* <Link to="/" class="fixed bottom-0 right-0">home</Link> */}
-        <div className="h-screen p-6 md:p-12 text-green flex justify-center">
-          <div className="w-full max-w-screen-2xl">{children}</div>
-        </div>
+      <main className="flex justify-center text-green">
+        {navigation}
+        <div className="w-full max-w-screen-2xl">{children}</div>
       </main>
     </>
   );
