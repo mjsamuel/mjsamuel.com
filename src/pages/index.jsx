@@ -26,7 +26,7 @@ const IndexPage = () => {
               return (
                 <h2 className={style}>
                   <Link to={link.url} className="hover:italic">
-                    {link.name}
+                    {link.name.toUpperCase()}
                   </Link>
                 </h2>
               );

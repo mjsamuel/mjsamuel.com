@@ -5,16 +5,20 @@ export const tColors = resolveConfig(tailwindConfig).theme.colors
 
 export const navLinks = [
   {
-    name: "ABOUT",
+    name: "Home",
+    url: "/"
+  },
+  {
+    name: "About",
     url: "/about",
   },
   {
-    name: "WORK",
+    name: "Work",
     url: "/work",
   },
   {
-    name: "CONTACT",
+    name: "Contact",
     url: "/contact",
-  },
+  }
 ];
 

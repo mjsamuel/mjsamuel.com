@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link } from "gatsby";
-import { tColors } from "../shared";
 import Layout from "../components/layout.jsx";
 import Visualization from "../components/visualization";
 const links = [
@@ -25,7 +24,7 @@ const links = [
 class AboutPage extends React.Component {
   render() {
     return (
-      <Layout title="Home" showNav>
+      <Layout title="About" showNav>
         <div className="h-screen p-6 md:p-12 text-green grid gap-16 grid-cols-2">
           <div className="flex flex-row-reverse items-center">
             <h1 className="text-6xl font-bold text-right">DORK WITH A KEYBOARD</h1>
