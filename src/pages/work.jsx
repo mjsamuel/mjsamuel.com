@@ -7,7 +7,7 @@ import Visualization from "../components/visualization";
 class WorkPage extends React.Component {
   render() {
     return (
-      <Layout title="About">
+      <Layout title="Work" showNav>
         <Visualization animation="WAVE"/>
       </Layout>
     );

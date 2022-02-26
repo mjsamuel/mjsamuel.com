@@ -19,8 +19,8 @@ const IndexPage = () => {
             SAMUEL
           </h1>
           <div className="font-medium">
-            {navLinks.map((link, i) => {
-              let style = "border-t-2 py-1 text-2xl ".concat(
+            {navLinks.slice(1).map((link, i) => {
+              let style = "border-b-2 py-1 text-2xl ".concat(
                 i + 1 === navLinks.length ? " border-b-2" : ""
               );
               return (
