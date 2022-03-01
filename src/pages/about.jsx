@@ -2,24 +2,6 @@ import * as React from "react";
 import { Link } from "gatsby";
 import Layout from "../components/layout.jsx";
 import Visualization from "../components/visualization";
-const links = [
-  {
-    name: "RESUME",
-    url: "/resume.pdf",
-  },
-  {
-    name: "GITHUB",
-    url: "https://github.com/mjsamuel",
-  },
-  {
-    name: "INSTAGRAM",
-    url: "https://www.instagram.com/matt.samuel/",
-  },
-  {
-    name: "LINKEDIN",
-    url: "https://au.linkedin.com/in/matt-samuel",
-  },
-];
 
 class AboutPage extends React.Component {
   render() {
@@ -27,7 +9,7 @@ class AboutPage extends React.Component {
       <Layout title="About" showNav>
         <div className="h-screen p-6 md:p-12 text-green grid gap-16 grid-cols-2">
           <div className="flex flex-row-reverse items-center">
-            <h1 className="text-6xl font-bold text-right">DORK WITH A KEYBOARD</h1>
+            <h1 className="text-6xl font-bold text-right">ABOUT</h1>
           </div>
           <div className="flex items-center">
             <div className="h-4/5 w-3/5">
