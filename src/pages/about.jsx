@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link } from "gatsby";
 import Layout from "../components/layout.jsx";
 import Visualization from "../components/visualization";
 
@@ -38,6 +37,11 @@ class AboutPage extends React.Component {
             iste expedita assumenda esse maiores possimus cum impedit similique
             eos. Deleniti tempora, natus quo magni molestias quaerat atque ex
             expedita.
+          </div>
+          <div>
+            <a href="/resume.pdf" className="hover:italic font-bold text-yellow">
+              resume.pdf
+            </a>
           </div>
         </div>
       </Layout>
