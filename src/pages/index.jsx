@@ -20,11 +20,8 @@ const IndexPage = () => {
           </h1>
           <div className="font-medium">
             {Object.keys(navLinks).filter(k => k !== "home").map((k, i) => {
-              let style = "border-b-2 py-1 text-2xl ".concat(
-                i + 1 === navLinks.length ? " border-b-2" : ""
-              );
               return (
-                <h2 className={style}>
+                <h2 className="border-b-2 py-1 text-2xl">
                   <Link to={navLinks[k]} className="hover:italic">
                     {k.toUpperCase()}
                   </Link>
