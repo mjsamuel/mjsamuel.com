@@ -2,20 +2,25 @@ import { PtsCanvas } from "react-pts-canvas";
 import { Create, Group, Pt, UI, UIButton } from "pts/dist/es5";
 import { tColors } from "../shared";
 
+const SPEED = 0.01;
+
 class Visualization extends PtsCanvas {
   private cells: UIButton[] = [];
-  private circles: Circle[] = [];
-  private dimensions: { columns: number; rows: number; aspectRatio: number } = {
+  private dimensions: { columns: number; rows: number; maxRadius: number } = {
     columns: 0,
     rows: 0,
-    aspectRatio: 0,
+    maxRadius: 0,
+  };
+  private circles: { cursor: Circle[]; echos: Circle[] } = {
+    echos: [],
+    cursor: [],
   };
 
   public constructor(props: any) {
     super(props);
   }
 
-  start(space, bound) {
+  start() {
     this.create();
   }
 
@@ -23,17 +28,19 @@ class Visualization extends PtsCanvas {
     this.create();
   }
 
-  animate(time, ftime) {
+  animate(time: number) {
+    this.form.stroke(tColors.white);
     let mousePos = new Pt(this.space.pointer.x / 25, this.space.pointer.y / 25);
-    // cleanup of the circles array
-    for (var i = 0; i < this.circles.length; i++) {
-      let c = this.circles[i];
+    this.circles.cursor.forEach((c) => {
+      c.centrePoint = mousePos;
+    });
+
+    for (var i = 0; i < this.circles.echos.length; i++) {
+      let c = this.circles.echos[i];
       if (c.startTime === undefined) {
-        c.centrePoint = mousePos;
-      } else if (c.startTime === -1) {
         c.init(time);
-      } else if (c.radius > this.dimensions.columns) {
-        this.circles.splice(i, 1);
+      } else if (c.radius > this.dimensions.maxRadius) {
+        this.circles.echos.splice(i, 1);
       } else {
         c.updateRadius(time);
       }
@@ -42,17 +49,20 @@ class Visualization extends PtsCanvas {
     this.cells.forEach((cell, index) => {
       let color = tColors.green;
       let coords = this.getCoords(index);
-
-      this.circles.forEach((c) => {
-        let inRadius: boolean =
-          Math.pow(coords.x - c.centrePoint.y, 2) +
-            Math.pow(coords.y - c.centrePoint.x, 2) <=
-          Math.pow(c.radius, 2);
-        if (inRadius) {
-          color = c.color;
+      (Object.keys(this.circles) as (keyof typeof this.circles)[]).forEach(
+        (key) => {
+          let circles: Circle[] = this.circles[key];
+          circles.forEach((c: Circle) => {
+            let inRadius =
+              Math.pow(coords.x - c.centrePoint.y, 2) +
+                Math.pow(coords.y - c.centrePoint.x, 2) <=
+              Math.pow(c.radius, 2);
+            if (inRadius) {
+              color = c.color;
+            }
+          });
         }
-      });
-
+      );
       this.form.fill(color).rect(cell.group);
     });
   }
@@ -67,7 +77,7 @@ class Visualization extends PtsCanvas {
     this.dimensions = {
       columns,
       rows,
-      aspectRatio: columns / rows,
+      maxRadius: (columns / rows > 1 ? columns : rows) + 50,
     };
 
     this.cells = Create.gridCells(
@@ -78,16 +88,14 @@ class Visualization extends PtsCanvas {
       let button = UIButton.fromRectangle(group);
       button.onClick(() => {
         let coords = this.getCoords(index);
-        this.circles.splice(
-          this.circles.length - 2,
-          0,
-          ...Circle.createEcho(coords)
+        this.circles.echos = this.circles.echos.concat(
+          Circle.createEcho(coords)
         );
       });
       return button;
     });
 
-    this.circles = Circle.createCursor();
+    this.circles.cursor = Circle.createCursor();
   }
 
   private getCoords(index: number): Pt {
@@ -97,8 +105,6 @@ class Visualization extends PtsCanvas {
     );
   }
 }
-
-const SPEED = 0.01;
 
 class Circle {
   centrePoint: Pt;
@@ -141,9 +147,9 @@ class Circle {
   static createEcho(coords: Pt): Circle[] {
     let point = new Pt(coords.y, coords.x);
     return [
-      new Circle(point, 4, tColors.gray, -1, 0),
-      new Circle(point, 4, tColors.white, -1, 50),
-      new Circle(point, 4, tColors.green, -1, 100),
+      new Circle(point, 4, tColors.gray, undefined, 0),
+      new Circle(point, 4, tColors.white, undefined, 50),
+      new Circle(point, 4, tColors.green, undefined, 100),
     ];
   }
 }
