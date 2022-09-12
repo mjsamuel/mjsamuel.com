@@ -2,14 +2,16 @@ import * as React from "react";
 import { Helmet } from "react-helmet";
 import { tColors } from "../shared";
 
-const Layout = ({ children, title }) => {
+const Layout = ({children, title}: { children: any, title: string }) => {
   return (
     <>
       <Helmet>
         <title>Matt Samuel | {title}</title>
         <meta name="theme-color" content={tColors.white} />
       </Helmet>
-      <main className="h-screen p-6 md:p-12 text-green">{children}</main>
+      <main className="flex justify-center text-green">
+        <div className="w-full max-w-screen-md">{children}</div>
+      </main>
     </>
   );
 };

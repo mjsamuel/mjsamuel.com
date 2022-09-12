@@ -1,0 +1,18 @@
+[
+  {
+    "heading1": "2022",
+    "heading2": "die-abolical",
+    "description":
+      "a puzzle game where the die with the highest face crushes the other. made using pico-8 in under two days for the 2022 gmtk game jam.",
+    "url": "https://itch.io/jam/gmtk-jam-2022/rate/1624361",
+    "images": []
+  },
+  {
+    "heading1": "2020",
+    "heading2": "adblockchain",
+    "description":
+      "a proof of concept for an alterative payment model of the web.",
+    "url": "https://github.com/mjsamuel/adblockchain",
+    "images": []
+  }
+]

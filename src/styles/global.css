@@ -14,7 +14,11 @@ body {
   background: theme("colors.yellow");
 }
 
-.pts {
+.pts-react {
+  height: 100%;
+}
+
+.pts-hover {
   height: 100%;
   cursor: none;
 }

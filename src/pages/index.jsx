@@ -1,43 +1,30 @@
 import * as React from "react";
-import {tColors} from "../shared";
-import { Link } from "gatsby";
 import Layout from "../components/layout";
+import Section from "../components/section";
+
 import Visualization from "../components/visualization";
+
+import { projects, contactLinks } from "../data"
 
 const IndexPage = () => {
   return (
     <Layout title="Home">
-      <div className="flex flex-col md:grid gap-8 grid-cols-2 h-full">
-        <div className="h-1/2 md:h-full">
-          <Visualization name="pts" />
+      <div className="flex flex-col md:grid gap-6 grid-cols-5 h-screen md:h-60v p-6 md:px-24 md:py-16">
+        <div className="h-3/5 md:h-full col-span-3">
+          <Visualization name="pts-hover" />
         </div>
 
-        <div className="flex flex-col justify-end flex-grow">
-          <h1 className="text-6xl text-right font-bold flex-grow">
+        <div className="flex flex-col justify-end flex-grow col-span-2">
+          <h1 className="text-3xl text-right font-bold flex-grow">
             MATTHEW
             <br />
             SAMUEL
           </h1>
-          <div className="font-medium text-2xl ">
-            <h2 className="border-b-2 border-t-2 py-1 ">
-              <Link to="/about" className="hover:italic">
-                ABOUT
-              </Link>
-            </h2>
-            <h2 className="border-b-2 py-1">
-              <Link to="/work" className="hover:italic">
-                WORK
-              </Link>
-            </h2>
-            <h2 className="border-b-2 py-1">
-              <Link to="/contact" className="hover:italic">
-                CONTACT
-              </Link>
-            </h2>
-            <span className="text-xs">© 2021 Matthew Samuel.</span>
-          </div>
+          <h2>developer based in melbourne, australia working on things /</h2>
         </div>
       </div>
+      <Section title="PROJECTS" items={projects} />
+      <Section title="CONTACT" items={contactLinks} />
     </Layout>
   );
 };
