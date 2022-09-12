@@ -65,6 +65,9 @@ class Visualization extends PtsCanvas {
       );
       this.form.fill(color).rect(cell.group);
     });
+    if (this.circles.echos.length > 0) {
+      console.log(this.circles.echos[0].radius);
+    }
   }
 
   action(type: String, px: number, py: number) {
@@ -131,6 +134,7 @@ class Circle {
 
   init(currentTime: number) {
     this.startTime = currentTime + this.timeOffset;
+    this.updateRadius(currentTime)
   }
 
   updateRadius(currentTime: number) {
@@ -139,16 +143,16 @@ class Circle {
 
   static createCursor(): Circle[] {
     return [
-      new Circle(new Pt(0, 0), 4.5, tColors.gray),
-      new Circle(new Pt(0, 0), 4, tColors.white),
+      new Circle(new Pt(0, 0), 2.75, tColors.gray),
+      new Circle(new Pt(0, 0), 2.5, tColors.white),
     ];
   }
 
   static createEcho(coords: Pt): Circle[] {
     let point = new Pt(coords.y, coords.x);
     return [
-      new Circle(point, 4, tColors.gray, undefined, 0),
-      new Circle(point, 4, tColors.white, undefined, 50),
+      new Circle(point, 4.7, tColors.gray, undefined, 0),
+      new Circle(point, 4.25, tColors.white, undefined, 50),
       new Circle(point, 4, tColors.green, undefined, 100),
     ];
   }
