@@ -1,10 +1,10 @@
-import { PtsCanvas } from "react-pts-canvas";
+import { PtsCanvasLegacy } from "react-pts-canvas";
 import { Create, Group, Pt, UI, UIButton } from "pts/dist/es5";
 import { tColors } from "../shared";
 
 const SPEED = 0.01;
 
-class Visualization extends PtsCanvas {
+class Visualization extends PtsCanvasLegacy {
   private cells: UIButton[] = [];
   private dimensions: { columns: number; rows: number; maxRadius: number } = {
     columns: 0,
