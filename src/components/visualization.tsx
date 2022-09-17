@@ -4,7 +4,7 @@ import { tColors } from "../shared";
 
 const SPEED = 0.01;
 
-class Visualization extends PtsCanvasLegacy {
+class Visualization extends PtsCanvasLegacy<any> {
   private cells: UIButton[] = [];
   private dimensions: { columns: number; rows: number; maxRadius: number } = {
     columns: 0,
@@ -29,11 +29,17 @@ class Visualization extends PtsCanvasLegacy {
   }
 
   animate(time: number) {
-    this.form.stroke(tColors.white);
-    let mousePos = new Pt(this.space.pointer.x / 25, this.space.pointer.y / 25);
-    this.circles.cursor.forEach((c) => {
-      c.centrePoint = mousePos;
-    });
+    this.form?.stroke(tColors.white);
+
+    if (this.space?.pointer) {
+      let mousePos = new Pt(
+        this.space.pointer.x / 25,
+        this.space.pointer.y / 25
+      );
+      this.circles.cursor.forEach((c) => {
+        c.centrePoint = mousePos;
+      });
+    }
 
     for (var i = 0; i < this.circles.echos.length; i++) {
       let c = this.circles.echos[i];
@@ -63,7 +69,7 @@ class Visualization extends PtsCanvasLegacy {
           });
         }
       );
-      this.form.fill(color).rect(cell.group);
+      this.form?.fill(color).rect(cell.group);
     });
     if (this.circles.echos.length > 0) {
       console.log(this.circles.echos[0].radius);
@@ -75,16 +81,18 @@ class Visualization extends PtsCanvasLegacy {
   }
 
   private create() {
-    let columns = Math.ceil(this.space.innerBound[1][0] / 25);
-    let rows = Math.ceil(this.space.innerBound[1][1] / 25);
-    this.dimensions = {
-      columns,
-      rows,
-      maxRadius: (columns / rows > 1 ? columns : rows) + 50,
-    };
+    if (this.space) {
+      let columns = Math.ceil(this.space.innerBound[1][0] / 25);
+      let rows = Math.ceil(this.space.innerBound[1][1] / 25);
+      this.dimensions = {
+        columns,
+        rows,
+        maxRadius: (columns / rows > 1 ? columns : rows) + 50,
+      };
+    }
 
     this.cells = Create.gridCells(
-      this.space.innerBound,
+      this.space?.innerBound,
       this.dimensions.columns,
       this.dimensions.rows
     ).map((group: Group, index: number) => {
@@ -134,7 +142,7 @@ class Circle {
 
   init(currentTime: number) {
     this.startTime = currentTime + this.timeOffset;
-    this.updateRadius(currentTime)
+    this.updateRadius(currentTime);
   }
 
   updateRadius(currentTime: number) {
