@@ -71,9 +71,6 @@ class Visualization extends PtsCanvasLegacy<any> {
       );
       this.form?.fill(color).rect(cell.group);
     });
-    if (this.circles.echos.length > 0) {
-      console.log(this.circles.echos[0].radius);
-    }
   }
 
   action(type: String, px: number, py: number) {
