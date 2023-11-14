@@ -20,7 +20,7 @@ const IndexPage = () => {
             <br />
             SAMUEL
           </h1>
-          <h2>developer based in melbourne, australia working on things /</h2>
+          <h2>developer based in melbourne, australia automating all the things /</h2>
         </div>
       </div>
       <Section title="PROJECTS" items={projects} />
