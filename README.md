@@ -1,47 +1,75 @@
-<div align="left">
-  <h1>
-    mjsamuel.com<br>
-  </h1>
-  <a href="https://app.netlify.com/sites/mattsamuel/deploys">
-    <img src="https://api.netlify.com/api/v1/badges/cb455149-9568-46c3-961f-6b0bbb63c0bb/deploy-status"/>
-  </a>
-</div>
-<img src="/static/screenshot.png"/>
+# Nuxt 3 Minimal Starter
 
-Portfolio site built with Gatsby, Tailwind CSS and Pts.js.
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Usage / Development Setup
+## Setup
 
-### Installing dependencies
+Make sure to install the dependencies:
 
-```
+```bash
+# npm
 npm install
+
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
 ```
 
-### Running the project
+## Development Server
 
-#### Development preview/build
+Start the development server on `http://localhost:3000`:
 
-To start the website and monitor for changes:
+```bash
+# npm
+npm run dev
 
+# pnpm
+pnpm run dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
 ```
-npm run develop
-```
 
-To access the page on other devices on the same local network:
+## Production
 
-```
-npm run develop-m
-```
+Build the application for production:
 
-#### Production build
-
-```
+```bash
+# npm
 npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
+
+# bun
+bun run build
 ```
 
-#### Production preview
+Locally preview production build:
 
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
 ```
-npm run serve
-```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
