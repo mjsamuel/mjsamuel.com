@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #e4e2dc;
+  --color-primary: #1f3517;
+  --color-secondary: #a09f9c;
+  --color-accent: #df9c61;
+}
+
+::selection {
+  background: var(--color-accent);
+}
+
+::-moz-selection {
+  background: var(--color-accent);
+}
