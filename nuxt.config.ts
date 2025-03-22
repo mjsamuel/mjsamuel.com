@@ -8,4 +8,12 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  components: [
+    {
+      path: "~/components/",
+      pathPrefix: false,
+      extensions: ["vue"],
+      pattern: "**/*",
+    },
+  ],
 });
