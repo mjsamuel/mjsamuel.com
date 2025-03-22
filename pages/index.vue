@@ -15,11 +15,19 @@
 <script setup lang="ts">
 const projects: SectionItem[] = [
   {
+    heading1: "2024",
+    heading2: "showoff",
+    url: "https://showoff.gg",
+    description: "a web app",
+    tags: ["vue"],
+  },
+  {
     heading1: "2022",
     heading2: "die-abolical",
     url: "https://itch.io/jam/gmtk-jam-2022/rate/1624361",
     description:
       "a puzzle game where the die with the highest face crushes the other made using pico-8 in under two days for the 2022 gmtk game jam.",
+    tags: ["pico-8", "lua"],
   },
   {
     heading1: "2020",
@@ -27,6 +35,7 @@ const projects: SectionItem[] = [
     url: "https://github.com/mjsamuel/adblockchain",
     description:
       "a proof of concept for an alterative payment model of the web.",
+    tags: ["web3", "blockchain"],
   },
 ];
 
