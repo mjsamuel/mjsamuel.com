@@ -1,10 +1,11 @@
 <template>
-  <div class="w-full md:w-1/2 flex flex-col gap-8 px-4 md:px-G">
+  <div class="flex w-full flex-col gap-8 px-4 md:w-2xl">
     <!-- Header -->
     <div>
       <h1 class="text-3xl font-bold">MATTHEW SAMUEL</h1>
       <span>developer based in melbourne automating all the things</span>
-      <div class="h-80 bg-primary mt-4"></div>
+      <Visulization class="h-80 py-4" />
+      <!-- <div class="h-80 bg-primary mt-4"></div> -->
     </div>
     <!-- Sections -->
     <Section title="Projects" :items="projects" />
@@ -13,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import type { SectionItem } from "~/types/homepage";
+
 const projects: SectionItem[] = [
   {
     heading1: "2024",
@@ -26,7 +29,7 @@ const projects: SectionItem[] = [
     heading2: "die-abolical",
     url: "https://itch.io/jam/gmtk-jam-2022/rate/1624361",
     description:
-      "a puzzle game where the die with the highest face crushes the other made using pico-8 in under two days for the 2022 gmtk game jam.",
+      "a puzzle game where the die with the highest face crushes the other -- made in under two days for the gmtk game jam.",
     tags: ["pico-8", "lua"],
   },
   {
