@@ -4,14 +4,5 @@
   --color-background: #e4e2dc;
   --color-primary: #1f3517;
   --color-secondary: #a09f9c;
-  --color-accent: #df9c61;
+  --color-gray: #A09F9C;
 }
-
-::selection {
-  background: var(--color-accent);
-}
-
-::-moz-selection {
-  background: var(--color-accent);
-}
-

@@ -1,0 +1,72 @@
+<div id="visualization" class="h-full w-full cursor-none"></div>
+
+<script>
+  import p5 from "p5";
+
+  const SQUARE_SIZE = 25;
+  const styles = getComputedStyle(document.documentElement);
+  const colorPrimary: string = styles.getPropertyValue("--color-primary");
+  const colorBackground: string = styles.getPropertyValue("--color-background");
+  const colorGray: string = styles.getPropertyValue("--color-gray");
+
+  const visualization = (p: p5) => {
+    let container: HTMLElement;
+    let dimensions = { columns: 0, rows: 0, width: 0, height: 0 };
+
+    p.setup = () => {
+      container = document.getElementById("visualization")!;
+      const { width, height } = container.getBoundingClientRect();
+      p.createCanvas(width, height);
+      _setup(width, height);
+    };
+
+    p.draw = () => {
+      const { mouseX, mouseY } = p;
+
+      p.background(colorBackground);
+      p.stroke(colorBackground);
+      for (let i = 0; i < dimensions.columns; i++) {
+        for (let j = 0; j < dimensions.rows; j++) {
+          const distanceToMouse = p.dist(
+            i * SQUARE_SIZE + SQUARE_SIZE / 2,
+            j * SQUARE_SIZE + SQUARE_SIZE / 2,
+            mouseX,
+            mouseY,
+          );
+
+          let color: string;
+          switch (true) {
+            case distanceToMouse < 60:
+              color = colorBackground;
+              break;
+            case distanceToMouse < 65:
+              color = colorGray;
+              break;
+            default:
+              color = colorPrimary;
+          }
+
+          p.fill(color);
+          p.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
+        }
+      }
+    };
+
+    p.windowResized = () => {
+      const { width, height } = container.getBoundingClientRect();
+      p.resizeCanvas(width, height);
+      _setup(width, height);
+    };
+
+    function _setup(width: number, height: number) {
+      dimensions = {
+        width,
+        height,
+        columns: Math.floor(width / SQUARE_SIZE),
+        rows: Math.floor(height / SQUARE_SIZE),
+      };
+    }
+  };
+
+  new p5(visualization, document.getElementById("visualization")!);
+</script>
