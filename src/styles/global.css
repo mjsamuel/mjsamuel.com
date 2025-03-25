@@ -1,46 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-body {
-  background-color: theme("colors.white");
+@theme {
+  --color-background: #e4e2dc;
+  --color-primary: #1f3517;
+  --color-secondary: #a09f9c;
+  --color-gray: #A09F9C;
 }
-
-::selection {
-  background: theme("colors.yellow");
-}
-
-::-moz-selection {
-  background: theme("colors.yellow");
-}
-
-.pts-react {
-  height: 100%;
-}
-
-.pts-hover {
-  height: 100%;
-  cursor: none;
-}
-
-/* main { */
-/*   margin: 100px 150px; */
-/* } */
-
-/* @media (max-width: 1080px) { */
-/*   main { */
-/*     margin: 100px 100px; */
-/*   } */
-/* } */
-
-/* @media (max-width: 768px) { */
-/*   main { */
-/*     margin: 100px 100px; */
-/*   } */
-/* } */
-
-/* @media (max-width: 480px) { */
-/*   main { */
-/*     margin: 100px 25px; */
-/*   } */
-/* } */
