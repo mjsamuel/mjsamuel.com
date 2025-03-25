@@ -22,11 +22,11 @@
 
     p.draw = () => {
       const { mouseX, mouseY } = p;
-
       p.background(colorBackground);
       p.stroke(colorBackground);
       for (let i = 0; i < dimensions.columns; i++) {
         for (let j = 0; j < dimensions.rows; j++) {
+          const mouseInDefaultPos = mouseX === 0 && mouseY === 0;
           const distanceToMouse = p.dist(
             i * SQUARE_SIZE + SQUARE_SIZE / 2,
             j * SQUARE_SIZE + SQUARE_SIZE / 2,
@@ -36,6 +36,9 @@
 
           let color: string;
           switch (true) {
+            case mouseInDefaultPos:
+              color = colorPrimary;
+              break;
             case distanceToMouse < 60:
               color = colorBackground;
               break;
