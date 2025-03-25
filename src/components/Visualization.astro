@@ -16,7 +16,28 @@
     p.setup = () => {
       container = document.getElementById("visualization")!;
       const { width, height } = container.getBoundingClientRect();
-      p.createCanvas(width, height);
+      const canvas = p.createCanvas(width, height);
+      canvas.elt.addEventListener(
+        "touchstart",
+        function (e: any) {
+          e.preventDefault();
+        },
+        { passive: false },
+      );
+      canvas.elt.addEventListener(
+        "touchmove",
+        function (e: any) {
+          e.preventDefault();
+        },
+        { passive: false },
+      );
+      canvas.elt.addEventListener(
+        "touchend",
+        function (e: any) {
+          e.preventDefault();
+        },
+        { passive: false },
+      );
       _setup(width, height);
     };
 
