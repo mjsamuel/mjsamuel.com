@@ -1,7 +1,7 @@
 <div id="visualization" class="h-full w-full cursor-none"></div>
 
 <script>
-  import p5 from "p5";
+  import "q5";
 
   const SQUARE_SIZE = 25;
   const styles = getComputedStyle(document.documentElement);
@@ -9,46 +9,25 @@
   const colorBackground: string = styles.getPropertyValue("--color-background");
   const colorGray: string = styles.getPropertyValue("--color-gray");
 
-  const visualization = (p: p5) => {
+  const visualization = (q: Q5) => {
     let container: HTMLElement;
     let dimensions = { columns: 0, rows: 0, width: 0, height: 0 };
 
-    p.setup = () => {
+    q.setup = () => {
       container = document.getElementById("visualization")!;
       const { width, height } = container.getBoundingClientRect();
-      const canvas = p.createCanvas(width, height);
-      canvas.elt.addEventListener(
-        "touchstart",
-        function (e: any) {
-          e.preventDefault();
-        },
-        { passive: false },
-      );
-      canvas.elt.addEventListener(
-        "touchmove",
-        function (e: any) {
-          e.preventDefault();
-        },
-        { passive: false },
-      );
-      canvas.elt.addEventListener(
-        "touchend",
-        function (e: any) {
-          e.preventDefault();
-        },
-        { passive: false },
-      );
-      _setup(width, height);
+      q.createCanvas(width, height);
+      _updateDimensions(width, height);
     };
 
-    p.draw = () => {
-      const { mouseX, mouseY } = p;
-      p.background(colorBackground);
-      p.stroke(colorBackground);
+    q.draw = () => {
+      const { mouseX, mouseY } = q;
+      q.background(colorBackground);
+      q.stroke(colorBackground);
       for (let i = 0; i < dimensions.columns; i++) {
         for (let j = 0; j < dimensions.rows; j++) {
           const mouseInDefaultPos = mouseX === 0 && mouseY === 0;
-          const distanceToMouse = p.dist(
+          const distanceToMouse = q.dist(
             i * SQUARE_SIZE + SQUARE_SIZE / 2,
             j * SQUARE_SIZE + SQUARE_SIZE / 2,
             mouseX,
@@ -70,19 +49,19 @@
               color = colorPrimary;
           }
 
-          p.fill(color);
-          p.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
+          q.fill(color);
+          q.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
         }
       }
     };
 
-    p.windowResized = () => {
+    q.windowResized = () => {
       const { width, height } = container.getBoundingClientRect();
-      p.resizeCanvas(width, height);
-      _setup(width, height);
+      q.resizeCanvas(width, height);
+      _updateDimensions(width, height);
     };
 
-    function _setup(width: number, height: number) {
+    function _updateDimensions(width: number, height: number) {
       dimensions = {
         width,
         height,
@@ -92,5 +71,5 @@
     }
   };
 
-  new p5(visualization, document.getElementById("visualization")!);
+  new Q5(visualization, document.getElementById("visualization")!);
 </script>
