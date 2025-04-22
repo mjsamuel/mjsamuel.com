@@ -87,4 +87,21 @@
   };
 
   new Q5(visualization, document.getElementById("visualization")!);
+
+  declare class Q5 {
+    mouseX: number;
+    mouseY: number;
+
+    constructor(sketch: (q: Q5) => void, element?: HTMLElement);
+    createCanvas(width: number, height: number): void;
+    background(color: string): void;
+    stroke(color: string): void;
+    fill(color: string): void;
+    rect(x: number, y: number, size: number): void;
+    dist(x1: number, y1: number, x2: number, y2: number): number;
+    resizeCanvas(width: number, height: number): void;
+    windowResized(): void;
+    setup(): void;
+    draw(): void;
+  }
 </script>
