@@ -16,3 +16,33 @@ import "../styles/global.css";
     <slot />
   </body>
 </html>
+
+<script is:inline>
+  const getTheme = () => {
+    const localStorageTheme = localStorage?.getItem("theme") ?? "";
+    if (["dark", "light"].includes(localStorageTheme)) {
+      return localStorageTheme;
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  };
+
+  const setTheme = (theme) => {
+    localStorage.setItem("theme", theme);
+    if (theme === "light") {
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  };
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => {
+      setTheme(e.matches ? "dark" : "light");
+    });
+
+  setTheme(getTheme());
+</script>

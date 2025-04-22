@@ -4,10 +4,21 @@
   import "q5";
 
   const SQUARE_SIZE = 25;
+  const COLORS = {
+    light: {
+      border: "--color-background",
+      idleSquare: "--color-primary",
+      hoveredSquare: "--color-background",
+      accentSquare: "--color-accent",
+    },
+    dark: {
+      border: "--color-secondary",
+      idleSquare: "--color-background",
+      hoveredSquare: "--color-secondary",
+      accentSquare: "--color-accent",
+    },
+  };
   const styles = getComputedStyle(document.documentElement);
-  const colorPrimary: string = styles.getPropertyValue("--color-primary");
-  const colorBackground: string = styles.getPropertyValue("--color-background");
-  const colorGray: string = styles.getPropertyValue("--color-gray");
 
   const visualization = (q: Q5) => {
     let container: HTMLElement;
@@ -21,9 +32,13 @@
     };
 
     q.draw = () => {
+      const isDarkMode =
+        document.documentElement.getAttribute("data-theme") === "dark";
+      const colors = COLORS[isDarkMode ? "dark" : "light"];
+
       const { mouseX, mouseY } = q;
-      q.background(colorBackground);
-      q.stroke(colorBackground);
+      q.background(styles.getPropertyValue(colors.idleSquare));
+      q.stroke(styles.getPropertyValue(colors.border));
       for (let i = 0; i < dimensions.columns; i++) {
         for (let j = 0; j < dimensions.rows; j++) {
           const mouseInDefaultPos = mouseX === 0 && mouseY === 0;
@@ -37,19 +52,19 @@
           let color: string;
           switch (true) {
             case mouseInDefaultPos:
-              color = colorPrimary;
+              color = colors.idleSquare;
               break;
             case distanceToMouse < 60:
-              color = colorBackground;
+              color = colors.hoveredSquare;
               break;
             case distanceToMouse < 65:
-              color = colorGray;
+              color = colors.accentSquare;
               break;
             default:
-              color = colorPrimary;
+              color = colors.idleSquare;
           }
 
-          q.fill(color);
+          q.fill(styles.getPropertyValue(color));
           q.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
         }
       }
