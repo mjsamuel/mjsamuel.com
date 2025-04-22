@@ -21,8 +21,11 @@ const { title, items } = Astro.props;
         <h4 class="text-secondary">{i.heading1}</h4>
         <div class="col-span-2">
           <h4>
-            <a href={i.url} target="_blank">
-              {i.heading2} →
+            <a href={i.url} target="_blank" class="group">
+              {i.heading2}{" "}
+              <span class="group-hover:ml-1  transition-all duration-200 ease-in-out">
+                →
+              </span>
             </a>
           </h4>
           <p class="text-secondary">{i.description}</p>
