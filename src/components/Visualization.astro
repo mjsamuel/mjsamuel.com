@@ -6,12 +6,14 @@
   const SQUARE_SIZE = 25;
   const COLORS = {
     light: {
+      backgrund: "--color-background",
       border: "--color-background",
       idleSquare: "--color-primary",
       hoveredSquare: "--color-background",
       accentSquare: "--color-accent",
     },
     dark: {
+      backgrund: "--color-background",
       border: "--color-secondary",
       idleSquare: "--color-background",
       hoveredSquare: "--color-secondary",
@@ -37,7 +39,7 @@
       const colors = COLORS[isDarkMode ? "dark" : "light"];
 
       const { mouseX, mouseY } = q;
-      q.background(styles.getPropertyValue(colors.idleSquare));
+      q.background(styles.getPropertyValue(colors.backgrund));
       q.stroke(styles.getPropertyValue(colors.border));
       for (let i = 0; i < dimensions.columns; i++) {
         for (let j = 0; j < dimensions.rows; j++) {
