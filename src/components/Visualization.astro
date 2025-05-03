@@ -1,4 +1,4 @@
-<div id="visualization" class="h-full w-full cursor-none"></div>
+<div id="visualization" class="h-full w-full cursor-pointer"></div>
 
 <script>
   import "q5";
@@ -6,14 +6,14 @@
   const SQUARE_SIZE = 25;
   const COLORS = {
     light: {
-      backgrund: "--color-background",
+      background: "--color-background",
       border: "--color-background",
       idleSquare: "--color-primary",
       hoveredSquare: "--color-background",
       accentSquare: "--color-accent",
     },
     dark: {
-      backgrund: "--color-background",
+      background: "--color-background",
       border: "--color-secondary",
       idleSquare: "--color-background",
       hoveredSquare: "--color-secondary",
@@ -21,6 +21,11 @@
     },
   };
   const styles = getComputedStyle(document.documentElement);
+  const echos: {
+    centerPoint: { x: number; y: number };
+    strokeWidth: number;
+    radius: number;
+  }[] = [];
 
   const visualization = (q: Q5) => {
     let container: HTMLElement;
@@ -30,61 +35,133 @@
       container = document.getElementById("visualization")!;
       const { width, height } = container.getBoundingClientRect();
       q.createCanvas(width, height);
-      _updateDimensions(width, height);
+      updateDimensions(width, height);
     };
 
     q.draw = () => {
       const isDarkMode =
         document.documentElement.getAttribute("data-theme") === "dark";
       const colors = COLORS[isDarkMode ? "dark" : "light"];
+      q.background(styles.getPropertyValue(colors.background));
+      q.stroke(styles.getPropertyValue(colors.border));
 
       const { mouseX, mouseY } = q;
-      q.background(styles.getPropertyValue(colors.backgrund));
-      q.stroke(styles.getPropertyValue(colors.border));
-      for (let i = 0; i < dimensions.columns; i++) {
-        for (let j = 0; j < dimensions.rows; j++) {
-          const mouseInDefaultPos = mouseX === 0 && mouseY === 0;
-          const distanceToMouse = q.dist(
-            i * SQUARE_SIZE + SQUARE_SIZE / 2,
-            j * SQUARE_SIZE + SQUARE_SIZE / 2,
-            mouseX,
-            mouseY,
-          );
+      const mouseInDefaultPos = mouseX === 0 && mouseY === 0;
 
-          let color: string;
-          switch (true) {
-            case mouseInDefaultPos:
-              color = colors.idleSquare;
-              break;
-            case distanceToMouse < 60:
-              color = colors.hoveredSquare;
-              break;
-            case distanceToMouse < 65:
-              color = colors.accentSquare;
-              break;
-            default:
-              color = colors.idleSquare;
-          }
-
-          q.fill(styles.getPropertyValue(color));
-          q.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
-        }
+      if (mouseInDefaultPos) {
+        drawIdleGrid(q, colors, dimensions);
+        return;
       }
+
+      updateEchos();
+      drawInteractiveGrid(q, colors, dimensions, mouseX, mouseY);
     };
 
     q.windowResized = () => {
       const { width, height } = container.getBoundingClientRect();
       q.resizeCanvas(width, height);
-      _updateDimensions(width, height);
+      updateDimensions(width, height);
     };
 
-    function _updateDimensions(width: number, height: number) {
+    q.mouseClicked = () => {
+      const { mouseX, mouseY } = q;
+      echos.push({
+        centerPoint: { x: mouseX, y: mouseY },
+        strokeWidth: 2,
+        radius: SQUARE_SIZE * 2,
+      });
+    };
+
+    function updateDimensions(width: number, height: number) {
       dimensions = {
         width,
         height,
         columns: Math.floor(width / SQUARE_SIZE),
         rows: Math.floor(height / SQUARE_SIZE),
       };
+    }
+
+    function updateEchos() {
+      echos.forEach((echo, index) => {
+        echo.radius += 18;
+        if (echo.radius > dimensions.width) {
+          echos.splice(index, 1);
+        }
+      });
+    }
+
+    function drawIdleGrid(
+      q: Q5,
+      colors: typeof COLORS.light | typeof COLORS.dark,
+      dimensions: typeof visualization.dimensions,
+    ) {
+      const color = colors.idleSquare;
+      for (let i = 0; i < dimensions.columns; i++) {
+        for (let j = 0; j < dimensions.rows; j++) {
+          q.fill(styles.getPropertyValue(color));
+          q.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
+        }
+      }
+    }
+
+    function drawInteractiveGrid(
+      q: Q5,
+      colors: typeof COLORS.light | typeof COLORS.dark,
+      dimensions: typeof visualization.dimensions,
+      mouseX: number,
+      mouseY: number,
+    ) {
+      for (let i = 0; i < dimensions.columns; i++) {
+        for (let j = 0; j < dimensions.rows; j++) {
+          const squareCenter = {
+            x: i * SQUARE_SIZE + SQUARE_SIZE / 2,
+            y: j * SQUARE_SIZE + SQUARE_SIZE / 2,
+          };
+
+          const distanceToMouse = q.dist(
+            squareCenter.x,
+            squareCenter.y,
+            mouseX,
+            mouseY,
+          );
+
+          const color = getSquareColor(colors, distanceToMouse, squareCenter);
+          q.fill(styles.getPropertyValue(color));
+          q.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
+        }
+      }
+    }
+
+    function getSquareColor(
+      colors: typeof COLORS.light | typeof COLORS.dark,
+      distanceToMouse: number,
+      squareCenter: { x: number; y: number },
+    ): string {
+      if (distanceToMouse < 60) {
+        return colors.hoveredSquare;
+      } else if (distanceToMouse < 65) {
+        return colors.accentSquare;
+      } else {
+        return isInEchoRadius(squareCenter)
+          ? colors.hoveredSquare
+          : colors.idleSquare;
+      }
+    }
+
+    function isInEchoRadius(squareCenter: { x: number; y: number }): boolean {
+      return echos.some((echo) => {
+        const { centerPoint, strokeWidth, radius } = echo;
+        const distanceToEcho = q.dist(
+          squareCenter.x,
+          squareCenter.y,
+          centerPoint.x,
+          centerPoint.y,
+        );
+        return (
+          distanceToEcho > radius &&
+          distanceToEcho < radius + strokeWidth * SQUARE_SIZE
+        );
+      });
     }
   };
 
@@ -105,5 +182,6 @@
     windowResized(): void;
     setup(): void;
     draw(): void;
+    mouseClicked(): void;
   }
 </script>
