@@ -2,9 +2,10 @@
 const { class: className } = Astro.props;
 ---
 
-<div
+<button
+  type="button"
   id="themeToggle"
-  class={`aspect-square flex justify-center items-center size-6 ${className}`}
+  class={`aspect-square flex justify-center items-center size-6 cursor-pointer ${className}`}
 >
   <svg
     id="themeToggleLight"
@@ -41,7 +42,7 @@ const { class: className } = Astro.props;
   >
     <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
   </svg>
-</div>
+</button>
 
 <script is:inline>
   /** @typedef {'system' | 'dark' | 'light'} Theme */
