@@ -80,10 +80,18 @@ const { class: className } = Astro.props;
     });
 
   document.getElementById("themeToggle")?.addEventListener("click", () => {
-    const isDarkMode =
-      document.documentElement.getAttribute("data-theme") === "dark";
-    currentTheme = isDarkMode ? "light" : "dark";
-    setTheme(currentTheme);
+    const currentSiteTheme =
+      document.documentElement.getAttribute("data-theme") || "light";
+    const currentSystemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+    let newTheme = currentSiteTheme === "dark" ? "light" : "dark";
+    if (newTheme === currentSystemTheme) {
+      newTheme = "system";
+    }
+    localStorage?.setItem("theme", newTheme);
+    setTheme(newTheme);
   });
 
   let currentTheme = getTheme();
