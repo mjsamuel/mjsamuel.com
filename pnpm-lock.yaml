@@ -18,8 +18,8 @@ importers:
         specifier: ^5.7.12
         version: 5.7.12(@types/node@22.15.17)(jiti@2.4.2)(lightningcss@1.29.2)(rollup@4.40.2)(typescript@5.8.3)(yaml@2.7.1)
       q5:
-        specifier: ^3.0.3
-        version: 3.0.3
+        specifier: ^3.2.1
+        version: 3.2.1
       tailwindcss:
         specifier: ^4.1.6
         version: 4.1.6
@@ -1505,8 +1505,8 @@ packages:
   property-information@7.1.0:
     resolution: {integrity: sha512-TwEZ+X+yCJmYfL7TPUOcvBZ4QfoT5YenQiJuX//0th53DE6w0xxLEtfK3iyryQFddXuvkIk51EEgrJQ0WJkOmQ==}
 
-  q5@3.0.3:
-    resolution: {integrity: sha512-WQfzVAFwIRlqsSGGGjH54oqOh4vhZjxj8Mc2TO/yv8lAphIvU0xBSrfqhpstDmfcfc3Geg/8MPul7UBdX49AVw==}
+  q5@3.2.1:
+    resolution: {integrity: sha512-U1Aa9sWGWFfDEGa2k9BHPK/6vQt2kWi1wg8SZOh5H/glzOuFtuVwwyjR2/dNvr0IyHyUqFNcmDhVR73QWQ+Fkg==}
 
   radix3@1.1.2:
     resolution: {integrity: sha512-b484I/7b8rDEdSDKckSSBA8knMpcdsXudlE/LNL639wFoHKwLbEkQFZHWEYwDC0wa0FKUcCY+GAF73Z7wxNVFA==}
@@ -3529,7 +3529,7 @@ snapshots:
 
   property-information@7.1.0: {}
 
-  q5@3.0.3: {}
+  q5@3.2.1: {}
 
   radix3@1.1.2: {}
 
