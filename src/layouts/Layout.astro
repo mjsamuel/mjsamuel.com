@@ -1,5 +1,12 @@
 ---
 import "../styles/global.css";
+import DarkModeToggle from "../components/DarkModeToggle.astro";
+
+const { pageTitle } = Astro.props;
+let title = "Matthew Samuel";
+if (pageTitle) {
+  title = `${pageTitle} | ${title}`;
+}
 ---
 
 <!doctype html>
@@ -10,9 +17,31 @@ import "../styles/global.css";
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>Matthew Samuel</title>
+    <title>{title}</title>
   </head>
   <body class="bg-background text-primary">
-    <slot />
+    <main class="flex flex-col items-center py-8">
+      <div class="flex w-full max-w-xl flex-col px-4 md:px-0">
+        <!-- Header -->
+        <div class="mb-4">
+          <div class="flex items-center">
+            <h1 class="text-3xl font-bold">
+              <a href="/">MATTHEW SAMUEL</a>
+            </h1>
+            <DarkModeToggle
+              class="static ml-auto mr-2 top-4 right-4 dark:text-secondary"
+            />
+          </div>
+          <span class="text-secondary">
+            developer based in melbourne automating all the things
+          </span>
+        </div>
+        <!-- Content -->
+        <slot />
+      </div>
+    </main>
   </body>
+  <footer class="flex justify-center items-center text-secondary my-4 text-sm">
+    <span>© {new Date().getFullYear()} Matthew Samuel</span>
+  </footer>
 </html>

@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Visualization from "../components/Visualization.astro";
-import DarkModeToggle from "../components/DarkModeToggle.astro";
 import Section, { type SectionItem } from "../components/Section.astro";
 
 const projects: SectionItem[] = [
@@ -10,7 +9,7 @@ const projects: SectionItem[] = [
     heading2: "showoff",
     url: "https://beta.showoff.gg",
     description: "",
-    tags: ["vue"],
+    tags: ["next.js"],
   },
   {
     heading1: "2022",
@@ -19,14 +18,6 @@ const projects: SectionItem[] = [
     description:
       "a puzzle game where the die with the highest face crushes the other. made using pico-8 in under two days for the 2022 gmtk game jam.",
     tags: ["pico-8", "lua"],
-  },
-  {
-    heading1: "2020",
-    heading2: "adblockchain",
-    url: "https://github.com/mjsamuel/adblockchain",
-    description:
-      "a proof of concept for an alterative payment model of the web.",
-    tags: ["web3", "blockchain"],
   },
 ];
 
@@ -42,31 +33,34 @@ const contact: SectionItem[] = [
     url: "mailto:hello@mjsamuel.com",
   },
 ];
+
+const recentPosts: SectionItem[] = Object.values(
+  import.meta.glob("./blog/*.md", { eager: true }),
+)
+  .map((post: any) => ({
+    heading1: null,
+    heading2: post.frontmatter.title,
+    description: post.frontmatter.description,
+    url: post.url,
+  }))
+  .slice(0, 3);
 ---
 
 <Layout>
-  <main class="flex flex-col items-center pt-8 pb-12">
-    <div class="flex w-full flex-col gap-8 px-4 md:px-0 md:w-xl">
-      <!-- Header -->
-      <div>
-        <div class="flex items-center">
-          <h1 class="text-3xl font-bold">
-            <a href="/">MATTHEW SAMUEL</a>
-          </h1>
-          <DarkModeToggle
-            class="static ml-auto mr-2 md:mr-0 md:fixed top-4 right-4 dark:text-secondary"
-          />
-        </div>
-        <span class="text-secondary">
-          developer based in melbourne automating all the things
-        </span>
-        <div class="bg-primary mt-4" style="height: 325px">
-          <Visualization />
-        </div>
-      </div>
-      <!-- Sections -->
+  <div class="flex flex-col gap-8">
+    <!-- Visualization -->
+    <div class="bg-primary" style="height: 325px">
+      <Visualization />
+    </div>
+    <!-- Sections -->
+    <div class="flex flex-col gap-12 mt-4">
       <Section title="Projects" items={projects} />
+      {
+        recentPosts.length > 0 && (
+          <Section title="Blog Posts" items={recentPosts} />
+        )
+      }
       <Section title="Links" items={contact} />
     </div>
-  </main>
+  </div>
 </Layout>
