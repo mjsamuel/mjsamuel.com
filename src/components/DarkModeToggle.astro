@@ -3,9 +3,9 @@ const { class: className } = Astro.props;
 ---
 
 <button
-  type="button"
   id="themeToggle"
   class={`aspect-square flex justify-center items-center size-6 cursor-pointer ${className}`}
+  aria-label="Toggle dark mode"
 >
   <svg
     id="themeToggleLight"
@@ -46,19 +46,19 @@ const { class: className } = Astro.props;
 
 <script is:inline>
   /** @typedef {'system' | 'dark' | 'light'} Theme */
-
   /** @return {Theme} */
   const getTheme = () => {
     return localStorage?.getItem("theme") ?? "system";
   };
 
+  const isSystemDarkModeEnabled = () => {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  };
+
   /** @param {Theme} theme */
   const setTheme = (theme) => {
     if (theme === "system") {
-      const isDarkMode = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
-      theme = isDarkMode ? "dark" : "light";
+      theme = isSystemDarkModeEnabled() ? "dark" : "light";
     }
 
     if (theme === "light") {
@@ -80,20 +80,18 @@ const { class: className } = Astro.props;
     });
 
   document.getElementById("themeToggle")?.addEventListener("click", () => {
-    const currentSiteTheme =
+    const prevTheme =
       document.documentElement.getAttribute("data-theme") || "light";
-    const currentSystemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
-    let newTheme = currentSiteTheme === "dark" ? "light" : "dark";
-    if (newTheme === currentSystemTheme) {
+    let newTheme = prevTheme === "dark" ? "light" : "dark";
+
+    const systemTheme = isSystemDarkModeEnabled() ? "dark" : "light";
+    if (systemTheme === newTheme) {
       newTheme = "system";
     }
+
     localStorage?.setItem("theme", newTheme);
     setTheme(newTheme);
   });
 
-  let currentTheme = getTheme();
-  setTheme(currentTheme);
+  setTheme(getTheme());
 </script>
