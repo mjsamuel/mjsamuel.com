@@ -9,6 +9,9 @@
   const ECHO_START_RADIUS = SQUARE_SIZE * 2;
   const ECHO_RING_WIDTH = SQUARE_SIZE * 2;
   const ECHO_SPEED = 18;
+  const BLOOM_SEEDS = 5;
+  const BLOOM_SPEED = 80;
+  const POP_DURATION = 450;
 
   // Each role maps to a CSS custom property defined in global.css
   const THEMES = {
@@ -36,6 +39,7 @@
   interface Sketch {
     mouseX: number;
     mouseY: number;
+    millis(): number;
     setup(): void;
     draw(): void;
     windowResized(): void;
@@ -62,6 +66,19 @@
 
   const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
 
+  // Overshoots slightly before settling, so squares bounce into place
+  const easeOutBack = (t: number) =>
+    1 + 2.7 * (t - 1) ** 3 + 1.7 * (t - 1) ** 2;
+
+  const playsIntro = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Ripples bloom from a few random points, as fractions of the grid so they
+  // keep their place on resize but move on every reload
+  const seeds = Array.from({ length: BLOOM_SEEDS }, () => ({
+    x: Math.random(),
+    y: Math.random(),
+  }));
+
   const isInEcho = (point: Point) =>
     echoes.some(({ center, radius }) => {
       const d = distance(point, center);
@@ -74,6 +91,8 @@
     let columns = 0;
     let rows = 0;
     let cellSize = SQUARE_SIZE;
+    let introStart = 0;
+    let introEnd = 0;
 
     // Stretch the squares slightly so whole columns span the full width, then
     // trim the height to whole rows so every cell stays a complete square
@@ -93,14 +112,38 @@
       }
     };
 
+    // Time in ms a cell starts popping in, as the nearest ripple reaches it
+    const bloomStart = (i: number, j: number) => {
+      const cell = { x: i, y: j };
+      const nearest = Math.min(
+        ...seeds.map((seed) =>
+          distance(cell, { x: seed.x * columns, y: seed.y * rows }),
+        ),
+      );
+      return nearest * BLOOM_SPEED;
+    };
+
+    const findIntroEnd = () => {
+      let latest = 0;
+      for (let i = 0; i < columns; i++) {
+        for (let j = 0; j < rows; j++) {
+          latest = Math.max(latest, bloomStart(i, j));
+        }
+      }
+      return latest + POP_DURATION;
+    };
+
     q.setup = () => {
       fitToContainer();
       q.createCanvas(width, height);
+      introStart = q.millis();
+      introEnd = findIntroEnd();
     };
 
     q.windowResized = () => {
       fitToContainer();
       q.resizeCanvas(width, height);
+      introEnd = findIntroEnd();
     };
 
     q.mouseClicked = () => {
@@ -122,6 +165,8 @@
       // The mouse reports (0, 0) until it first moves over the page
       const mouse = { x: q.mouseX, y: q.mouseY };
       const hasMouse = mouse.x !== 0 || mouse.y !== 0;
+      const time = q.millis() - introStart;
+      const isIntroPlaying = playsIntro && time < introEnd;
 
       for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
@@ -134,6 +179,19 @@
           else if (d < HOVER_RADIUS + HOVER_RING_WIDTH) q.fill(colors.accent);
           else if (isInEcho(center)) q.fill(colors.highlight);
           else q.fill(colors.idle);
+
+          if (isIntroPlaying) {
+            const progress = (time - bloomStart(i, j)) / POP_DURATION;
+            if (progress <= 0) continue;
+            if (progress < 1) {
+              // Grow from the cell's centre, lit in the accent for the first
+              // half so the leading edge of each ripple stands out
+              const size = cellSize * easeOutBack(progress);
+              if (progress < 0.5) q.fill(colors.accent);
+              q.square(center.x - size / 2, center.y - size / 2, size);
+              continue;
+            }
+          }
 
           q.square(x, y, cellSize);
         }
