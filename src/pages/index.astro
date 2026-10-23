@@ -46,19 +46,36 @@ const recentPosts: SectionItem[] = Object.values(
   .slice(0, 3);
 ---
 
-<Layout>
-  <div class="flex flex-col gap-8">
-    <!-- Visualization -->
-    <div class="h-80">
-      <Visualization />
+<!-- Name and sections on the left, scrolling beside a fixed-height visualization on the right -->
+<Layout bare>
+  <div class="my-auto grid w-full max-w-5xl gap-12 px-4 sm:px-6 md:h-[min(60vh,32rem)] md:grid-cols-2">
+    <!-- On mobile this wrapper dissolves so the visualization can sit between the name and the sections -->
+    <div class="flex flex-col gap-12 max-md:contents md:min-h-0 md:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div class="flex flex-col gap-4">
+        <h1 class="text-4xl leading-none font-bold sm:text-6xl">
+          <a href="/">
+            MATTHEW
+            <br />
+            SAMUEL
+          </a>
+        </h1>
+        <span class="text-secondary sm:text-lg">
+          developer based in melbourne automating all the things
+        </span>
+      </div>
+      <div class="flex flex-col gap-12 max-md:order-last">
+        <Section title="Projects" items={projects} />
+        {recentPosts.length > 0 && (
+          <Section title="Blog Posts" items={recentPosts} />
+        )}
+        <Section title="Links" items={contact} />
+      </div>
     </div>
-    <!-- Sections -->
-    <div class="flex flex-col gap-12 mt-4">
-      <Section title="Projects" items={projects} />
-      {recentPosts.length > 0 && (
-        <Section title="Blog Posts" items={recentPosts} />
-      )}
-      <Section title="Links" items={contact} />
+    <!-- Absolutely positioned so the canvas fills the row instead of setting its height -->
+    <div class="relative aspect-square w-full md:aspect-auto">
+      <div class="absolute inset-0">
+        <Visualization />
+      </div>
     </div>
   </div>
 </Layout>

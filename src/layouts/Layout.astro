@@ -3,7 +3,7 @@ import "../styles/global.css";
 import DarkModeToggle from "../components/DarkModeToggle.astro";
 import Analytics from "@vercel/analytics/astro";
 
-const { pageTitle } = Astro.props;
+const { pageTitle, bare = false } = Astro.props;
 let title = "Matthew Samuel";
 if (pageTitle) {
   title = `${pageTitle} | ${title}`;
@@ -52,19 +52,23 @@ if (pageTitle) {
   </head>
   <body class="flex min-h-dvh flex-col bg-background text-primary">
     <main class="flex flex-1 flex-col items-center py-8 sm:py-12 lg:py-16">
-      <div class="flex w-full max-w-xl flex-col px-4 sm:px-6 lg:max-w-2xl">
-        <!-- Header -->
-        <div class="mb-4">
-          <h1 class="text-2xl font-bold sm:text-3xl">
-            <a href="/">MATTHEW SAMUEL</a>
-          </h1>
-          <span class="text-secondary">
-            developer based in melbourne automating all the things
-          </span>
-        </div>
-        <!-- Content -->
+      {bare ? (
         <slot />
-      </div>
+      ) : (
+        <div class="flex w-full max-w-xl flex-col px-4 sm:px-6 lg:max-w-2xl">
+          <!-- Header -->
+          <div class="mb-4">
+            <h1 class="text-2xl font-bold sm:text-3xl">
+              <a href="/">MATTHEW SAMUEL</a>
+            </h1>
+            <span class="text-secondary">
+              developer based in melbourne automating all the things
+            </span>
+          </div>
+          <!-- Content -->
+          <slot />
+        </div>
+      )}
     </main>
     <Analytics />
     <footer class="flex justify-center items-center gap-3 text-secondary my-4 text-sm">
