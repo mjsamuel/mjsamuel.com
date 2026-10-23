@@ -16,8 +16,8 @@ const { title, items } = Astro.props;
 <section class="flex w-full flex-col gap-3">
   <h2 class="text-2xl font-bold">{title.toUpperCase()}</h2>
   {items.map((i) => (
-    <div class="grid gap-x-6 sm:grid-cols-[8rem_1fr]">
-      <h4 class="text-secondary">{i.heading1}</h4>
+    <div>
+      {i.heading1 && <h4 class="text-secondary">{i.heading1}</h4>}
       <div>
         <h4>
           <a
