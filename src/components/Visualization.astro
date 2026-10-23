@@ -71,15 +71,25 @@
   const sketch = (q: Sketch) => {
     let width = 0;
     let height = 0;
+    let columns = 0;
+    let rows = 0;
+    let cellSize = SQUARE_SIZE;
 
+    // Stretch the squares slightly so whole columns span the full width, then
+    // trim the height to whole rows so every cell stays a complete square
     const fitToContainer = () => {
-      ({ width, height } = container.getBoundingClientRect());
+      const bounds = container.getBoundingClientRect();
+      width = bounds.width;
+      columns = Math.max(1, Math.round(width / SQUARE_SIZE));
+      cellSize = width / columns;
+      rows = Math.max(1, Math.floor(bounds.height / cellSize));
+      height = rows * cellSize;
     };
 
     const advanceEchoes = () => {
       for (let i = echoes.length - 1; i >= 0; i--) {
         echoes[i].radius += ECHO_SPEED;
-        if (echoes[i].radius > width) echoes.splice(i, 1);
+        if (echoes[i].radius > Math.hypot(width, height)) echoes.splice(i, 1);
       }
     };
 
@@ -113,14 +123,11 @@
       const mouse = { x: q.mouseX, y: q.mouseY };
       const hasMouse = mouse.x !== 0 || mouse.y !== 0;
 
-      const columns = Math.floor(width / SQUARE_SIZE);
-      const rows = Math.floor(height / SQUARE_SIZE);
-
       for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
-          const x = i * SQUARE_SIZE;
-          const y = j * SQUARE_SIZE;
-          const center = { x: x + SQUARE_SIZE / 2, y: y + SQUARE_SIZE / 2 };
+          const x = i * cellSize;
+          const y = j * cellSize;
+          const center = { x: x + cellSize / 2, y: y + cellSize / 2 };
           const d = hasMouse ? distance(center, mouse) : Infinity;
 
           if (d < HOVER_RADIUS) q.fill(colors.highlight);
@@ -128,7 +135,7 @@
           else if (isInEcho(center)) q.fill(colors.highlight);
           else q.fill(colors.idle);
 
-          q.square(x, y, SQUARE_SIZE);
+          q.square(x, y, cellSize);
         }
       }
     };
