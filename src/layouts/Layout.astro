@@ -29,9 +29,7 @@ if (pageTitle) {
             <h1 class="text-3xl font-bold">
               <a href="/">MATTHEW SAMUEL</a>
             </h1>
-            <DarkModeToggle
-              class="static ml-auto mr-2 top-4 right-4 dark:text-secondary"
-            />
+            <DarkModeToggle class="static ml-auto mr-2 top-4 right-4 dark:text-secondary" />
           </div>
           <span class="text-secondary">
             developer based in melbourne automating all the things
@@ -44,6 +42,12 @@ if (pageTitle) {
     <Analytics />
   </body>
   <footer class="flex justify-center items-center text-secondary my-4 text-sm">
-    <span>© {new Date().getFullYear()} Matthew Samuel</span>
+    <span>
+      © <span id="year">{new Date().getFullYear()}</span> Matthew Samuel
+    </span>
+    <!-- Build-time year is the fallback; refresh it so a stale build stays current -->
+    <script is:inline>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
   </footer>
 </html>
