@@ -4,184 +4,135 @@
   import "q5";
 
   const SQUARE_SIZE = 25;
-  const COLORS = {
+  const HOVER_RADIUS = 60;
+  const HOVER_RING_WIDTH = 5;
+  const ECHO_START_RADIUS = SQUARE_SIZE * 2;
+  const ECHO_RING_WIDTH = SQUARE_SIZE * 2;
+  const ECHO_SPEED = 18;
+
+  // Each role maps to a CSS custom property defined in global.css
+  const THEMES = {
     light: {
       background: "--color-background",
       border: "--color-background",
-      idleSquare: "--color-primary",
-      hoveredSquare: "--color-background",
-      accentSquare: "--color-accent",
+      idle: "--color-primary",
+      highlight: "--color-background",
+      accent: "--color-accent",
     },
     dark: {
       background: "--color-background",
       border: "--color-secondary",
-      idleSquare: "--color-background",
-      hoveredSquare: "--color-secondary",
-      accentSquare: "--color-accent",
+      idle: "--color-background",
+      highlight: "--color-secondary",
+      accent: "--color-accent",
     },
   };
-  const styles = getComputedStyle(document.documentElement);
-  const echos: {
-    centerPoint: { x: number; y: number };
-    strokeWidth: number;
-    radius: number;
-  }[] = [];
 
-  const visualization = (q: Q5) => {
-    let container: HTMLElement;
-    let dimensions = { columns: 0, rows: 0, width: 0, height: 0 };
+  type Theme = typeof THEMES.light;
+  type Point = { x: number; y: number };
 
-    q.setup = () => {
-      container = document.getElementById("visualization")!;
-      const { width, height } = container.getBoundingClientRect();
-      q.createCanvas(width, height);
-      updateDimensions(width, height);
-    };
-
-    q.draw = () => {
-      const isDarkMode =
-        document.documentElement.getAttribute("data-theme") === "dark";
-      const colors = COLORS[isDarkMode ? "dark" : "light"];
-      q.background(styles.getPropertyValue(colors.background));
-      q.stroke(styles.getPropertyValue(colors.border));
-
-      const { mouseX, mouseY } = q;
-      const mouseInDefaultPos = mouseX === 0 && mouseY === 0;
-
-      if (mouseInDefaultPos) {
-        drawIdleGrid(q, colors, dimensions);
-        return;
-      }
-
-      updateEchos();
-      drawInteractiveGrid(q, colors, dimensions, mouseX, mouseY);
-    };
-
-    q.windowResized = () => {
-      const { width, height } = container.getBoundingClientRect();
-      q.resizeCanvas(width, height);
-      updateDimensions(width, height);
-    };
-
-    q.mouseClicked = () => {
-      const { mouseX, mouseY } = q;
-      echos.push({
-        centerPoint: { x: mouseX, y: mouseY },
-        strokeWidth: 2,
-        radius: SQUARE_SIZE * 2,
-      });
-    };
-
-    function updateDimensions(width: number, height: number) {
-      dimensions = {
-        width,
-        height,
-        columns: Math.floor(width / SQUARE_SIZE),
-        rows: Math.floor(height / SQUARE_SIZE),
-      };
-    }
-
-    function updateEchos() {
-      echos.forEach((echo, index) => {
-        echo.radius += 18;
-        if (echo.radius > dimensions.width) {
-          echos.splice(index, 1);
-        }
-      });
-    }
-
-    function drawIdleGrid(
-      q: Q5,
-      colors: typeof COLORS.light | typeof COLORS.dark,
-      dimensions: typeof visualization.dimensions,
-    ) {
-      const color = colors.idleSquare;
-      for (let i = 0; i < dimensions.columns; i++) {
-        for (let j = 0; j < dimensions.rows; j++) {
-          q.fill(styles.getPropertyValue(color));
-          q.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
-        }
-      }
-    }
-
-    function drawInteractiveGrid(
-      q: Q5,
-      colors: typeof COLORS.light | typeof COLORS.dark,
-      dimensions: typeof visualization.dimensions,
-      mouseX: number,
-      mouseY: number,
-    ) {
-      for (let i = 0; i < dimensions.columns; i++) {
-        for (let j = 0; j < dimensions.rows; j++) {
-          const squareCenter = {
-            x: i * SQUARE_SIZE + SQUARE_SIZE / 2,
-            y: j * SQUARE_SIZE + SQUARE_SIZE / 2,
-          };
-
-          const distanceToMouse = q.dist(
-            squareCenter.x,
-            squareCenter.y,
-            mouseX,
-            mouseY,
-          );
-
-          const color = getSquareColor(colors, distanceToMouse, squareCenter);
-          q.fill(styles.getPropertyValue(color));
-          q.rect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE);
-        }
-      }
-    }
-
-    function getSquareColor(
-      colors: typeof COLORS.light | typeof COLORS.dark,
-      distanceToMouse: number,
-      squareCenter: { x: number; y: number },
-    ): string {
-      if (distanceToMouse < 60) {
-        return colors.hoveredSquare;
-      } else if (distanceToMouse < 65) {
-        return colors.accentSquare;
-      } else {
-        return isInEchoRadius(squareCenter)
-          ? colors.hoveredSquare
-          : colors.idleSquare;
-      }
-    }
-
-    function isInEchoRadius(squareCenter: { x: number; y: number }): boolean {
-      return echos.some((echo) => {
-        const { centerPoint, strokeWidth, radius } = echo;
-        const distanceToEcho = q.dist(
-          squareCenter.x,
-          squareCenter.y,
-          centerPoint.x,
-          centerPoint.y,
-        );
-        return (
-          distanceToEcho > radius &&
-          distanceToEcho < radius + strokeWidth * SQUARE_SIZE
-        );
-      });
-    }
-  };
-
-  new Q5(visualization, document.getElementById("visualization")!);
-
-  declare class Q5 {
+  // q5's bundled types only declare its API as globals, so describe the
+  // instance-mode subset used here
+  interface Sketch {
     mouseX: number;
     mouseY: number;
-
-    constructor(sketch: (q: Q5) => void, element?: HTMLElement);
+    setup(): void;
+    draw(): void;
+    windowResized(): void;
+    mouseClicked(): void;
     createCanvas(width: number, height: number): void;
+    resizeCanvas(width: number, height: number): void;
     background(color: string): void;
     stroke(color: string): void;
     fill(color: string): void;
-    rect(x: number, y: number, size: number): void;
-    dist(x1: number, y1: number, x2: number, y2: number): number;
-    resizeCanvas(width: number, height: number): void;
-    windowResized(): void;
-    setup(): void;
-    draw(): void;
-    mouseClicked(): void;
+    square(x: number, y: number, size: number): void;
   }
+
+  const container = document.getElementById("visualization")!;
+  const styles = getComputedStyle(document.documentElement);
+  const echoes: { center: Point; radius: number }[] = [];
+
+  const resolveColors = (theme: Theme) =>
+    Object.fromEntries(
+      Object.entries(theme).map(([role, variable]) => [
+        role,
+        styles.getPropertyValue(variable),
+      ]),
+    ) as Theme;
+
+  const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
+
+  const isInEcho = (point: Point) =>
+    echoes.some(({ center, radius }) => {
+      const d = distance(point, center);
+      return d > radius && d < radius + ECHO_RING_WIDTH;
+    });
+
+  const sketch = (q: Sketch) => {
+    let width = 0;
+    let height = 0;
+
+    const fitToContainer = () => {
+      ({ width, height } = container.getBoundingClientRect());
+    };
+
+    const advanceEchoes = () => {
+      for (let i = echoes.length - 1; i >= 0; i--) {
+        echoes[i].radius += ECHO_SPEED;
+        if (echoes[i].radius > width) echoes.splice(i, 1);
+      }
+    };
+
+    q.setup = () => {
+      fitToContainer();
+      q.createCanvas(width, height);
+    };
+
+    q.windowResized = () => {
+      fitToContainer();
+      q.resizeCanvas(width, height);
+    };
+
+    q.mouseClicked = () => {
+      echoes.push({
+        center: { x: q.mouseX, y: q.mouseY },
+        radius: ECHO_START_RADIUS,
+      });
+    };
+
+    q.draw = () => {
+      const isDark =
+        document.documentElement.getAttribute("data-theme") === "dark";
+      const colors = resolveColors(THEMES[isDark ? "dark" : "light"]);
+
+      q.background(colors.background);
+      q.stroke(colors.border);
+      advanceEchoes();
+
+      // The mouse reports (0, 0) until it first moves over the page
+      const mouse = { x: q.mouseX, y: q.mouseY };
+      const hasMouse = mouse.x !== 0 || mouse.y !== 0;
+
+      const columns = Math.floor(width / SQUARE_SIZE);
+      const rows = Math.floor(height / SQUARE_SIZE);
+
+      for (let i = 0; i < columns; i++) {
+        for (let j = 0; j < rows; j++) {
+          const x = i * SQUARE_SIZE;
+          const y = j * SQUARE_SIZE;
+          const center = { x: x + SQUARE_SIZE / 2, y: y + SQUARE_SIZE / 2 };
+          const d = hasMouse ? distance(center, mouse) : Infinity;
+
+          if (d < HOVER_RADIUS) q.fill(colors.highlight);
+          else if (d < HOVER_RADIUS + HOVER_RING_WIDTH) q.fill(colors.accent);
+          else if (isInEcho(center)) q.fill(colors.highlight);
+          else q.fill(colors.idle);
+
+          q.square(x, y, SQUARE_SIZE);
+        }
+      }
+    };
+  };
+
+  new Q5(sketch, container);
 </script>
