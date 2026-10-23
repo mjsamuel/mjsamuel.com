@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import DarkModeToggle from "../components/DarkModeToggle.astro";
-import Analytics from "@vercel/analytics/astro";
 
 const { pageTitle, bare = false } = Astro.props;
 let title = "Matthew Samuel";
@@ -70,7 +69,6 @@ if (pageTitle) {
         </div>
       )}
     </main>
-    <Analytics />
     <footer class="flex justify-center items-center gap-3 text-secondary my-4 text-sm">
       <span>
         © <span id="year">{new Date().getFullYear()}</span> Matthew Samuel

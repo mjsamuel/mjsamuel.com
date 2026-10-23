@@ -12,7 +12,6 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@tailwindcss/vite": "^4.3.3",
-    "@vercel/analytics": "^2.0.1",
     "astro": "^7.4.2",
     "q5": "^4.9.4",
     "tailwindcss": "^4.3.3"
@@ -22,7 +21,8 @@
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.1",
-    "prettier-plugin-tailwindcss": "^0.8.1"
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "wrangler": "^4.152.0"
   },
   "prettier": {
     "plugins": [
