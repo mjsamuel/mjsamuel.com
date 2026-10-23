@@ -13,3 +13,9 @@
   --color-background: #0d0f10;
   --color-primary: #46553f;
 }
+
+/* Light text in both themes: the dark background colour is too close to the dark-mode green */
+::selection {
+  background-color: var(--color-primary);
+  color: #e4e2dc;
+}

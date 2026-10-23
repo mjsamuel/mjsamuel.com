@@ -3,7 +3,7 @@ import "../styles/global.css";
 import DarkModeToggle from "../components/DarkModeToggle.astro";
 import Analytics from "@vercel/analytics/astro";
 
-const { pageTitle } = Astro.props;
+const { pageTitle, bare = false } = Astro.props;
 let title = "Matthew Samuel";
 if (pageTitle) {
   title = `${pageTitle} | ${title}`;
@@ -19,28 +19,59 @@ if (pageTitle) {
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title}</title>
+    <!-- Applies the theme before first paint so dark mode doesn't flash light; DarkModeToggle uses these globals -->
+    <script is:inline>
+      /** @typedef {'system' | 'dark' | 'light'} Theme */
+      /** @return {Theme} */
+      const getTheme = () => {
+        return localStorage?.getItem("theme") ?? "system";
+      };
+
+      const systemDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      /** @param {Theme} theme */
+      const setTheme = (theme) => {
+        if (theme === "system") {
+          theme = systemDarkMode.matches ? "dark" : "light";
+        }
+
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      };
+
+      systemDarkMode.addEventListener("change", () => {
+        if (getTheme() !== "system") return;
+        setTheme("system");
+      });
+
+      setTheme(getTheme());
+    </script>
   </head>
   <body class="flex min-h-dvh flex-col bg-background text-primary">
     <main class="flex flex-1 flex-col items-center py-8 sm:py-12 lg:py-16">
-      <div class="flex w-full max-w-xl flex-col px-4 sm:px-6 lg:max-w-2xl">
-        <!-- Header -->
-        <div class="mb-4">
-          <div class="flex items-center gap-4">
+      {bare ? (
+        <slot />
+      ) : (
+        <div class="flex w-full max-w-xl flex-col px-4 sm:px-6 lg:max-w-2xl">
+          <!-- Header -->
+          <div class="mb-4">
             <h1 class="text-2xl font-bold sm:text-3xl">
               <a href="/">MATTHEW SAMUEL</a>
             </h1>
-            <DarkModeToggle class="ml-auto shrink-0 dark:text-secondary" />
+            <span class="text-secondary">
+              developer based in melbourne automating all the things
+            </span>
           </div>
-          <span class="text-secondary">
-            developer based in melbourne automating all the things
-          </span>
+          <!-- Content -->
+          <slot />
         </div>
-        <!-- Content -->
-        <slot />
-      </div>
+      )}
     </main>
     <Analytics />
-    <footer class="flex justify-center items-center text-secondary my-4 text-sm">
+    <footer class="flex justify-center items-center gap-3 text-secondary my-4 text-sm">
       <span>
         © <span id="year">{new Date().getFullYear()}</span> Matthew Samuel
       </span>
@@ -48,6 +79,7 @@ if (pageTitle) {
       <script is:inline>
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
+      <DarkModeToggle class="hover:text-primary" />
     </footer>
   </body>
 </html>
