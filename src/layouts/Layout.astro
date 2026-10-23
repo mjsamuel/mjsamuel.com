@@ -14,22 +14,22 @@ if (pageTitle) {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title}</title>
   </head>
-  <body class="bg-background text-primary">
-    <main class="flex flex-col items-center py-8">
-      <div class="flex w-full max-w-xl flex-col px-4 md:px-0">
+  <body class="flex min-h-dvh flex-col bg-background text-primary">
+    <main class="flex flex-1 flex-col items-center py-8 sm:py-12 lg:py-16">
+      <div class="flex w-full max-w-xl flex-col px-4 sm:px-6 lg:max-w-2xl">
         <!-- Header -->
         <div class="mb-4">
-          <div class="flex items-center">
-            <h1 class="text-3xl font-bold">
+          <div class="flex items-center gap-4">
+            <h1 class="text-2xl font-bold sm:text-3xl">
               <a href="/">MATTHEW SAMUEL</a>
             </h1>
-            <DarkModeToggle class="static ml-auto mr-2 top-4 right-4 dark:text-secondary" />
+            <DarkModeToggle class="ml-auto shrink-0 dark:text-secondary" />
           </div>
           <span class="text-secondary">
             developer based in melbourne automating all the things
@@ -40,14 +40,14 @@ if (pageTitle) {
       </div>
     </main>
     <Analytics />
+    <footer class="flex justify-center items-center text-secondary my-4 text-sm">
+      <span>
+        © <span id="year">{new Date().getFullYear()}</span> Matthew Samuel
+      </span>
+      <!-- Build-time year is the fallback; refresh it so a stale build stays current -->
+      <script is:inline>
+        document.getElementById("year").textContent = new Date().getFullYear();
+      </script>
+    </footer>
   </body>
-  <footer class="flex justify-center items-center text-secondary my-4 text-sm">
-    <span>
-      © <span id="year">{new Date().getFullYear()}</span> Matthew Samuel
-    </span>
-    <!-- Build-time year is the fallback; refresh it so a stale build stays current -->
-    <script is:inline>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-  </footer>
 </html>

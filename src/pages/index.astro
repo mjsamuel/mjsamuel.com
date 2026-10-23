@@ -49,17 +49,15 @@ const recentPosts: SectionItem[] = Object.values(
 <Layout>
   <div class="flex flex-col gap-8">
     <!-- Visualization -->
-    <div class="bg-primary" style="height: 325px">
+    <div class="h-60 sm:h-80">
       <Visualization />
     </div>
     <!-- Sections -->
     <div class="flex flex-col gap-12 mt-4">
       <Section title="Projects" items={projects} />
-      {
-        recentPosts.length > 0 && (
-          <Section title="Blog Posts" items={recentPosts} />
-        )
-      }
+      {recentPosts.length > 0 && (
+        <Section title="Blog Posts" items={recentPosts} />
+      )}
       <Section title="Links" items={contact} />
     </div>
   </div>

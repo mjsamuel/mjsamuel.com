@@ -15,26 +15,24 @@ const { title, items } = Astro.props;
 
 <section class="flex w-full flex-col gap-3">
   <h2 class="text-2xl font-bold">{title.toUpperCase()}</h2>
-  {
-    items.map((i) => (
-      <div v-for="item in props.items" class="grid">
-        <h4 class="text-secondary">{i.heading1}</h4>
-        <div class="col-span-2">
-          <h4>
-            <a
-              href={i.url}
-              target={i.url[0] === "/" ? "_self" : "_blank"}
-              class="group"
-            >
-              {i.heading2}{" "}
-              <span class="group-hover:ml-1  transition-all duration-200 ease-in-out">
-                →
-              </span>
-            </a>
-          </h4>
-          <p class="text-secondary">{i.description}</p>
-        </div>
+  {items.map((i) => (
+    <div class="grid gap-x-6 sm:grid-cols-[8rem_1fr]">
+      <h4 class="text-secondary">{i.heading1}</h4>
+      <div>
+        <h4>
+          <a
+            href={i.url}
+            target={i.url[0] === "/" ? "_self" : "_blank"}
+            class="group"
+          >
+            {i.heading2}{" "}
+            <span class="group-hover:ml-1 transition-all duration-200 ease-in-out">
+              →
+            </span>
+          </a>
+        </h4>
+        <p class="text-secondary">{i.description}</p>
       </div>
-    ))
-  }
+    </div>
+  ))}
 </section>
